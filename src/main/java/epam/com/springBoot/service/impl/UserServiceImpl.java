@@ -1,6 +1,7 @@
 package epam.com.springBoot.service.impl;
 
 import epam.com.springBoot.dto.UserDTO;
+import epam.com.springBoot.exceptions.UserNotFoundException;
 import epam.com.springBoot.model.User;
 import epam.com.springBoot.repository.UserRepository;
 import epam.com.springBoot.service.UserService;
@@ -31,8 +32,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
-        return userRepository.getById(id);
+    public User getById(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package epam.com.springBoot.controller.impl;
+package epam.com.springBoot.controller;
 
 import epam.com.springBoot.dto.ActivityDTO;
 import epam.com.springBoot.model.Activity;

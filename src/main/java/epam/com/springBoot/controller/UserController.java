@@ -1,4 +1,4 @@
-package epam.com.springBoot.controller.impl;
+package epam.com.springBoot.controller;
 
 import epam.com.springBoot.dto.UserDTO;
 import epam.com.springBoot.dto.group.OnCreate;
@@ -29,6 +29,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public List<User> findAll() {
         return userService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public User getUser(@PathVariable Long id) {
+        return userService.getById(id);
     }
 
     @PutMapping
