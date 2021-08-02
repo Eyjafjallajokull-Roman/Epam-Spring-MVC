@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 public class Activity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Timestamp startTime;
@@ -24,7 +24,7 @@ public class Activity {
     private Status status;
     private int createdByUserID;
     private int oldActivityId;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "users_activity", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "activity_id"))
     private List<User> users;
