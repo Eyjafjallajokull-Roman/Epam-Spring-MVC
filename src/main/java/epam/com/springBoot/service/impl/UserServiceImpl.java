@@ -20,34 +20,47 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ConversionService conversionService;
 
+    @Autowired
+    private MappingServiceImpl mappingService;
+
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
     @Override
-    public User save(UserDTO userDTO) {
+    public UserDTO createUser(UserDTO userDTO) {
+        //todo add if for user if exist
         User user = conversionService.convert(userDTO, User.class);
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User getById(Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-    }
-
-    @Override
-    public User update(UserDTO dto) {
-        User userToUpdate = userRepository.getByEmail(dto.getEmail());
-        userToUpdate.setPassword(dto.getPassword());
-        userToUpdate.setSurname(dto.getSurname());
-        userToUpdate.setName(dto.getName());
-        return userRepository.save(userToUpdate);
+        user = userRepository.save(user);
+        return conversionService.convert(user, UserDTO.class);
     }
 
 
     @Override
-    public void delete(Long id) {
-        userRepository.deleteById(id);
+    public UserDTO getById(Long id) {
+        return conversionService
+                .convert(userRepository.findById(id).orElseThrow(UserNotFoundException::new), UserDTO.class);
+    }
+
+    @Override
+    public UserDTO update(UserDTO dto, String email) {
+        User userToUpdate = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        User user = mappingService.getData(dto, userToUpdate);
+        userRepository.save(user);
+        return conversionService.convert(user, UserDTO.class);
+    }
+
+    @Override
+    public UserDTO getByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        return conversionService.convert(user, UserDTO.class);
+    }
+
+
+    @Override
+    public void deleteByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        userRepository.delete(user);
     }
 }
