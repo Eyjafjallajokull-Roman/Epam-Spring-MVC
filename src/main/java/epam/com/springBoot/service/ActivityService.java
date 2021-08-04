@@ -8,9 +8,11 @@ import java.util.List;
 public interface ActivityService {
     List<Activity> findAll();
 
-    Activity findById(Long id);
+    ActivityDTO createActivity(ActivityDTO activityDTO);
 
-    Activity save(ActivityDTO activityDTO);
+    ActivityDTO updateActivity(ActivityDTO activityDTO, Long id);
+
+    ActivityDTO getById(Long id);
 
     void delete(Long id);
 }

@@ -4,7 +4,6 @@ import epam.com.springBoot.dto.UserDTO;
 import epam.com.springBoot.model.User;
 import org.springframework.core.convert.converter.Converter;
 
-import java.util.Objects;
 
 public class UserConvertor implements Converter<UserDTO, User> {
     @Override

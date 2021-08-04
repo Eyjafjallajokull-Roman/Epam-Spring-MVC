@@ -27,23 +27,7 @@ public class UserController {
         return userAssembler.toModel(userService.createUser(dto));
     }
 
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public List<User> findAll() {
-//        return userService.findAll();
-//    }
 
-//    @GetMapping("/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public User getUser(@PathVariable Long id) {
-//        return userService.getById(id);
-//    }
-
-    @GetMapping("/{email}")
-    @ResponseStatus(HttpStatus.OK)
-    public UserModel getUserByEmail(@PathVariable String email) {
-        return userAssembler.toModel(userService.getByEmail(email));
-    }
 
     @PatchMapping("/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -56,5 +40,17 @@ public class UserController {
         userService.deleteByEmail(email);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{email}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserModel getUserByEmail(@PathVariable String email) {
+        return userAssembler.toModel(userService.getByEmail(email));
+    }
+
+    //    @GetMapping
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+//    public List<User> findAll() {
+//        return userService.findAll();
+//    }
 
 }
