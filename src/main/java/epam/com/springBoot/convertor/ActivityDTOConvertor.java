@@ -14,6 +14,7 @@ public class ActivityDTOConvertor implements Converter<Activity, ActivityDTO> {
                 .setStartTime(activity.getStartTime())
                 .setTypeOfActivity(activity.getTypeOfActivity().name())
                 .setDescriptionRus(activity.getDescriptionRus())
-                .setDescriptionEng(activity.getDescriptionEng());
+                .setDescriptionEng(activity.getDescriptionEng())
+                .setCreatedByUserId(activity.getCreatedByUserId());
     }
 }

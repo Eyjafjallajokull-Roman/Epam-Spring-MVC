@@ -1,6 +1,6 @@
 package epam.com.springBoot.dto;
 
-import epam.com.springBoot.dto.group.OnCreate;
+
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -8,15 +8,17 @@ import java.sql.Timestamp;
 
 @Data
 public class ActivityDTO {
+
     private Long id;
-    @NotBlank(message = "name shouldn`t be empty", groups = OnCreate.class)
+    @NotBlank(message = "name shouldn`t be empty")
     private String name;
-    @NotBlank(message = "'startTime' shouldn`t be empty", groups = OnCreate.class)
+    @NotBlank(message = "'startTime' shouldn`t be empty")
     private Timestamp startTime;
-    @NotBlank(message = "endTime shouldn`t be empty", groups = OnCreate.class)
+    @NotBlank(message = "endTime shouldn`t be empty")
     private Timestamp endTime;
     @NotBlank(message = "type of activity shouldn`t be empty")
     private String typeOfActivity;
+    private Long createdByUserId;
     private String descriptionEng;
     private String descriptionRus;
 
@@ -52,6 +54,11 @@ public class ActivityDTO {
 
     public ActivityDTO setDescriptionRus(String descriptionRus) {
         this.descriptionRus = descriptionRus;
+        return this;
+    }
+
+    public ActivityDTO setCreatedByUserId(Long createdByUserId) {
+        this.createdByUserId = createdByUserId;
         return this;
     }
 }

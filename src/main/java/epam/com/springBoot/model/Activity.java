@@ -22,8 +22,7 @@ public class Activity {
     private TypeOfActivity typeOfActivity;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private int createdByUserID;
-    private int oldActivityId;
+    private Long createdByUserId;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "users_activity", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "activity_id"))
@@ -69,18 +68,16 @@ public class Activity {
         return this;
     }
 
-    public Activity setCreatedByUserID(int createdByUserID) {
-        this.createdByUserID = createdByUserID;
+    public Activity setCreatedByUserId(Long createdByUserID) {
+        this.createdByUserId = createdByUserID;
         return this;
     }
 
-    public Activity setOldActivityId(int oldActivityId) {
-        this.oldActivityId = oldActivityId;
-        return this;
-    }
 
     public Activity setUsers(List<User> users) {
         this.users = users;
         return this;
     }
+
+
 }

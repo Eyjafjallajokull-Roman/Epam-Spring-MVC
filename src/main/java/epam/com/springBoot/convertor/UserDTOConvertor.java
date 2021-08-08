@@ -10,8 +10,7 @@ public class UserDTOConvertor implements Converter<User, UserDTO> {
         return new UserDTO()
                 .setName(user.getName())
                 .setEmail(user.getEmail())
-                .setSurname(user.getSurname())
-                .setPassword(user.getPassword());
+                .setSurname(user.getSurname());
     }
 
 

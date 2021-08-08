@@ -1,56 +1,70 @@
 package epam.com.springBoot.controller;
 
+import epam.com.springBoot.api.UserApi;
 import epam.com.springBoot.controller.assembler.UserAssembler;
 import epam.com.springBoot.controller.model.UserModel;
 import epam.com.springBoot.dto.UserDTO;
 import epam.com.springBoot.dto.group.OnCreate;
 import epam.com.springBoot.dto.group.OnUpdate;
+import epam.com.springBoot.service.ActivityService;
 import epam.com.springBoot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
 @Validated
-public class UserController {
+public class UserController implements UserApi {
     @Autowired
     private UserService userService;
     @Autowired
     private UserAssembler userAssembler;
+    @Autowired
+    private ActivityService activityService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @Override
     public UserModel createUser(@RequestBody @Validated(OnCreate.class) UserDTO dto) {
         return userAssembler.toModel(userService.createUser(dto));
     }
 
-
-
-    @PatchMapping("/{email}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @Override
     public UserModel update(@RequestBody @Validated(OnUpdate.class) UserDTO dto, @PathVariable String email) {
         return userAssembler.toModel(userService.update(dto, email));
     }
 
-    @DeleteMapping("/{email}")
+    @Override
     public ResponseEntity<Void> delete(@PathVariable String email) {
         userService.deleteByEmail(email);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{email}")
-    @ResponseStatus(HttpStatus.OK)
+    @Override
     public UserModel getUserByEmail(@PathVariable String email) {
         return userAssembler.toModel(userService.getByEmail(email));
     }
 
-    //    @GetMapping
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public List<User> findAll() {
-//        return userService.findAll();
+
+    //todo mapping
+    @Override
+    public ResponseEntity<Void> addUserToActivity(String email, Long activityId) {
+        userService.addUserToActivity(email, activityId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteUserFromActivity(String email, Long activityId) {
+        userService.deleteUserFromActivity(email, activityId);
+        return ResponseEntity.noContent().build();
+    }
+
+//    @GetMapping
+//    public ResponseEntity<Void> setOnDelete(Long id) {
+//        activityService.setOnDelete(id);
+//        return ResponseEntity.noContent().build();
 //    }
+
 
 }

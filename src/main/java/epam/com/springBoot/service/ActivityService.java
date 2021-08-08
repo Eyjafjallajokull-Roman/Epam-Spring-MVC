@@ -1,7 +1,11 @@
 package epam.com.springBoot.service;
 
+import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.dto.ActivityDTO;
 import epam.com.springBoot.model.Activity;
+import epam.com.springBoot.model.Status;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 import java.util.List;
 
@@ -14,5 +18,12 @@ public interface ActivityService {
 
     ActivityDTO getById(Long id);
 
+    PagedModel<ActivityModel> findActivitiesByTypeOfActivityAndStatus(String typeOfActivity, Status status, Pageable pageable);
+
+    PagedModel<ActivityModel> findActivitiesByCreatedByUserEmailOrUserId(String email, String typeOfActivity,
+                                                                         String status, Pageable pageable);
+
     void delete(Long id);
+
+    void setOnDelete(Long id);
 }
