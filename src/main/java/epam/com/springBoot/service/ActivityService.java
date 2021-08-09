@@ -26,4 +26,8 @@ public interface ActivityService {
     void delete(Long id);
 
     void setOnDelete(Long id);
+
+    void acceptActivity(Long activityId);
+
+    void declineActivity(Long activityId);
 }

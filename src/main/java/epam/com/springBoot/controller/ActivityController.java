@@ -1,17 +1,18 @@
 package epam.com.springBoot.controller;
 
+import epam.com.springBoot.api.ActivityApi;
 import epam.com.springBoot.controller.assembler.ActivityAssembler;
 import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.dto.ActivityDTO;
 import epam.com.springBoot.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/activities")
-public class ActivityController {
+public class ActivityController implements ActivityApi {
 
     @Autowired
     private ActivityService activityService;
@@ -20,32 +21,31 @@ public class ActivityController {
     private ActivityAssembler activityAssembler;
 
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @Override
     public ActivityModel createActivity(@RequestBody ActivityDTO dto) {
         return activityAssembler.toModel(activityService.createActivity(dto));
     }
 
-    @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @Override
     public ActivityModel updateActivity(@RequestBody ActivityDTO dto, @PathVariable Long id) {
         return activityAssembler.toModel(activityService.updateActivity(dto, id));
     }
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @Override
     public ActivityModel getActivity(@PathVariable Long id) {
         return activityAssembler.toModel(activityService.getById(id));
     }
 
-
-    @DeleteMapping("/{id}")
+    @Override
     public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
         activityService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-
+    public ResponseEntity<Void> setOnDelete(@PathVariable Long activityId) {
+        activityService.setOnDelete(activityId);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }

@@ -17,6 +17,7 @@ public class ActivityDTO {
     @NotBlank(message = "endTime shouldn`t be empty")
     private Timestamp endTime;
     @NotBlank(message = "type of activity shouldn`t be empty")
+    private String status;
     private String typeOfActivity;
     private Long createdByUserId;
     private String descriptionEng;

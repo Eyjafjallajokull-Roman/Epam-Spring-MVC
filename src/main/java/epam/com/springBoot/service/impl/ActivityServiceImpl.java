@@ -4,7 +4,6 @@ import epam.com.springBoot.controller.assembler.ActivityAssembler;
 import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.dto.ActivityDTO;
 import epam.com.springBoot.exceptions.ActivityNotFoundException;
-import epam.com.springBoot.exceptions.NoSuchUserException;
 import epam.com.springBoot.exceptions.UserNotFoundException;
 import epam.com.springBoot.model.Activity;
 import epam.com.springBoot.model.Status;
@@ -133,6 +132,18 @@ public class ActivityServiceImpl implements ActivityService {
         activity.setStatus(Status.ON_DELETE);
         activityRepository.save(activity);
         log.info(" Activity successfully set on delete");
+    }
+
+    @Override
+    public void acceptActivity(Long activityId) {
+        Activity activity = activityRepository.getById(activityId).setStatus(Status.ACCEPT);
+        activityRepository.save(activity);
+    }
+
+    @Override
+    public void declineActivity(Long activityId) {
+        Activity activity = activityRepository.getById(activityId).setStatus(Status.DECLINE);
+        activityRepository.save(activity);
     }
 
 }
