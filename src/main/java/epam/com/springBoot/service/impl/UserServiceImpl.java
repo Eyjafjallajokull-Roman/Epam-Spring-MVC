@@ -7,6 +7,7 @@ import epam.com.springBoot.exceptions.ActivityNotFoundException;
 import epam.com.springBoot.exceptions.NoSuchUserException;
 import epam.com.springBoot.exceptions.UserAlreadyExist;
 import epam.com.springBoot.exceptions.UserNotFoundException;
+import epam.com.springBoot.model.Role;
 import epam.com.springBoot.model.User;
 import epam.com.springBoot.repository.ActivityRepository;
 import epam.com.springBoot.repository.UserRepository;
@@ -59,6 +60,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExist();
         }
         User user = conversionService.convert(userDTO, User.class);
+        user.setRole(Role.CLIENT);
         user = userRepository.save(user);
         log.info("User was created successfully");
         return conversionService.convert(user, UserDTO.class);

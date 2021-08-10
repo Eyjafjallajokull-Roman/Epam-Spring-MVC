@@ -3,13 +3,20 @@ package epam.com.springBoot.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import epam.com.springBoot.dto.group.OnCreate;
 import epam.com.springBoot.dto.group.OnUpdate;
+import epam.com.springBoot.validator.PasswordConstraint;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 
-
+@PasswordConstraint.List({
+        @PasswordConstraint(
+                field = "password",
+                fieldMatch = "confirmPassword",
+                message = "Passwords do not match!"
+        ),
+})
 @Data
 public class UserDTO {
 
