@@ -21,7 +21,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -48,8 +47,10 @@ public class ActivityServiceImpl implements ActivityService {
 
 
     @Override
-    public List<Activity> findAll() {
-        return activityRepository.findAll();
+    public PagedModel<ActivityModel> findAllActivities(Pageable pageable) {
+        Page<Activity> page = activityRepository.findAll(pageable);
+        Page<ActivityDTO> activityDTOS = page.map(activity -> conversionService.convert(activity, ActivityDTO.class));
+        return pagedResourcesAssembler.toModel(activityDTOS, activityAssembler);
     }
 
     @Override
@@ -112,6 +113,15 @@ public class ActivityServiceImpl implements ActivityService {
             page = activityRepository.findActivitiesByCreatedByUserIdOrUserIdAndTypeOfActivity(userId,
                     typeOfActivity, status, pageable);
         }
+        Page<ActivityDTO> map = page.map(activity -> conversionService.convert(activity, ActivityDTO.class));
+        return pagedResourcesAssembler.toModel(map, activityAssembler);
+    }
+
+    @Override
+    public PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatus(String email, Status status, Pageable pageable) {
+        log.info("Try to find activities by created by User with this email" + email + "and status" + status);
+        Long userId = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new).getId();
+        Page<Activity> page = activityRepository.findActivitiesByCreatedByUserIdAndStatus(userId, status, pageable);
         Page<ActivityDTO> map = page.map(activity -> conversionService.convert(activity, ActivityDTO.class));
         return pagedResourcesAssembler.toModel(map, activityAssembler);
     }

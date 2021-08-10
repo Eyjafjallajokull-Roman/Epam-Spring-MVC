@@ -22,6 +22,8 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     Page<Activity> findActivitiesByStatus(Status status, Pageable pageable);
 
+    Page<Activity> findActivitiesByCreatedByUserIdAndStatus(Long createdId, Status status, Pageable pageable);
+
     @Query(nativeQuery = true, value = "select * from activity a left join users_activity ua on a.id = ua.activity_id " +
             "left join user u on u.id = ua.user_id where (u.id = ?1 or a.created_by_user_id = ?1) and a.status = ?2")
     Page<Activity> findActivitiesByCreatedByUserEmailOrUserId(Long userId, String status, Pageable pageable);

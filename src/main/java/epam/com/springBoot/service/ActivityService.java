@@ -4,13 +4,14 @@ import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.dto.ActivityDTO;
 import epam.com.springBoot.model.Activity;
 import epam.com.springBoot.model.Status;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
 import java.util.List;
 
 public interface ActivityService {
-    List<Activity> findAll();
+    PagedModel<ActivityModel> findAllActivities(Pageable pageable);
 
     ActivityDTO createActivity(ActivityDTO activityDTO);
 
@@ -22,6 +23,8 @@ public interface ActivityService {
 
     PagedModel<ActivityModel> findActivitiesByCreatedByUserEmailOrUserId(String email, String typeOfActivity,
                                                                          String status, Pageable pageable);
+
+    PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatus(String email, Status status, Pageable pageable);
 
     void delete(Long id);
 

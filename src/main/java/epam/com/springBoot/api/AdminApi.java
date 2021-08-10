@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +19,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/api/v1/admin")
 public interface AdminApi {
 
+    @GetMapping("/all-activities")
+    @ResponseStatus(HttpStatus.OK)
+    PagedModel<ActivityModel> findAllActivities(Pageable pageable);
+
     @ApiOperation("Get all Users with pagination")
-    @GetMapping
+    @GetMapping("/all-users")
     @ResponseStatus(HttpStatus.ACCEPTED)
     PagedModel<UserModel> getAllUsers(Pageable pageable);
 
@@ -45,9 +50,23 @@ public interface AdminApi {
             @ApiImplicitParam(name = "activityId", paramType = "path", required = true, value = "Activity Id"),
     })
     @ApiOperation("Find all Users by Activity with pagination")
-    @GetMapping("/users/{id}")
+    @GetMapping("/users/{activityId}")
     @ResponseStatus(HttpStatus.OK)
-    PagedModel<UserModel> findAllUsersByActivityId(@PathVariable Long id, Pageable pageable);
+    PagedModel<UserModel> findAllUsersByActivityId(@PathVariable Long activityId, Pageable pageable);
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "activityId", paramType = "path", required = true, value = "Activity Id"),
+    })
+    @ApiOperation("Set Activity status 'ACCEPT' ")
+    @GetMapping("/activities/accept/{activityId}")
+    ResponseEntity<Void> acceptActivity(@PathVariable Long activityId);
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "activityId", paramType = "path", required = true, value = "Activity Id"),
+    })
+    @ApiOperation("Set Activity status 'DECLINE' ")
+    @GetMapping("/activities/decline/{activityId}")
+    ResponseEntity<Void> declineActivity(@PathVariable Long activityId);
 
 
 }

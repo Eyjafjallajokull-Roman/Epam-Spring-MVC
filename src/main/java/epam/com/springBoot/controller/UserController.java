@@ -2,13 +2,17 @@ package epam.com.springBoot.controller;
 
 import epam.com.springBoot.api.UserApi;
 import epam.com.springBoot.controller.assembler.UserAssembler;
+import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.controller.model.UserModel;
 import epam.com.springBoot.dto.UserDTO;
 import epam.com.springBoot.dto.group.OnCreate;
 import epam.com.springBoot.dto.group.OnUpdate;
+import epam.com.springBoot.model.Status;
 import epam.com.springBoot.service.ActivityService;
 import epam.com.springBoot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,11 +64,21 @@ public class UserController implements UserApi {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping
-//    public ResponseEntity<Void> setOnDelete(Long id) {
-//        activityService.setOnDelete(id);
-//        return ResponseEntity.noContent().build();
-//    }
+    @Override
+    public ResponseEntity<Void> setOnDelete(Long id) {
+        activityService.setOnDelete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatusMainPage(String email, Pageable pageable) {
+        return activityService.findActivitiesByCreatedByUserIdAndStatus(email, Status.ACCEPT, pageable);
+    }
+
+    @Override
+    public PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatus(@PathVariable String email, Status status, Pageable pageable) {
+        return activityService.findActivitiesByCreatedByUserIdAndStatus(email, status, pageable);
+    }
 
 
 }
