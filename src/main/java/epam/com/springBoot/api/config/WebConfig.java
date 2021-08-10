@@ -4,6 +4,7 @@ import epam.com.springBoot.convertor.ActivityConvertor;
 import epam.com.springBoot.convertor.ActivityDTOConvertor;
 import epam.com.springBoot.convertor.UserConvertor;
 import epam.com.springBoot.convertor.UserDTOConvertor;
+import epam.com.springBoot.interceptor.AdminInterceptor;
 import epam.com.springBoot.interceptor.UserInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -26,8 +27,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new UserInterceptor())
-                .addPathPatterns("/users/*");
-        registry.addInterceptor(new UserInterceptor()).addPathPatterns("/activities/*");
+                .addPathPatterns("/api/v1/users/*");
+        registry.addInterceptor(new UserInterceptor()).addPathPatterns("/api/v1/activities/*");
+        registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/api/v1/admin/*");
     }
 
     @Override
