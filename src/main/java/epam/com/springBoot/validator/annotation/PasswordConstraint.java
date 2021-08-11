@@ -1,4 +1,6 @@
-package epam.com.springBoot.validator;
+package epam.com.springBoot.validator.annotation;
+
+import epam.com.springBoot.validator.PasswordValidator;
 
 import javax.validation.Constraint;
 import java.lang.annotation.*;

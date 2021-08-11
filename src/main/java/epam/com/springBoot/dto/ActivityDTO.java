@@ -1,23 +1,34 @@
 package epam.com.springBoot.dto;
 
 
+import epam.com.springBoot.dto.group.OnCreate;
+import epam.com.springBoot.validator.annotation.TimeConstraint;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
+@TimeConstraint.List({
+        @TimeConstraint(
+                endTime = "endTime",
+                startTime = "startTime",
+                message = "Incorrect data, check the time you enter " +
+                        "(The start time must be greater than your current time and the end time must be greater than the start time)."
+        )
+})
 @Data
 public class ActivityDTO {
 
     private Long id;
-    @NotBlank(message = "name shouldn`t be empty")
+    @NotNull(message = "name shouldn`t be empty", groups = OnCreate.class)
     private String name;
-    @NotBlank(message = "'startTime' shouldn`t be empty")
+    @NotNull(message = "startTime shouldn`t be empty", groups = OnCreate.class)
     private Timestamp startTime;
-    @NotBlank(message = "endTime shouldn`t be empty")
+    @NotNull(message = "endTime shouldn`t be empty", groups = OnCreate.class)
     private Timestamp endTime;
-    @NotBlank(message = "type of activity shouldn`t be empty")
     private String status;
+    @NotBlank(message = "type of activity shouldn`t be empty")
     private String typeOfActivity;
     private Long createdByUserId;
     private String descriptionEng;

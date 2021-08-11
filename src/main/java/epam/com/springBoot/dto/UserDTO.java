@@ -3,7 +3,7 @@ package epam.com.springBoot.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import epam.com.springBoot.dto.group.OnCreate;
 import epam.com.springBoot.dto.group.OnUpdate;
-import epam.com.springBoot.validator.PasswordConstraint;
+import epam.com.springBoot.validator.annotation.PasswordConstraint;
 import lombok.Data;
 
 import javax.validation.constraints.Email;

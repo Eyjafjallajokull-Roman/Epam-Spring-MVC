@@ -63,7 +63,7 @@ public class AdminController implements AdminApi {
 
     @Override
     public ResponseEntity<Void> acceptActivity(@PathVariable Long activityId) {
-        activityService.declineActivity(activityId);
+        activityService.acceptActivity(activityId);
         return ResponseEntity.noContent().build();
     }
 

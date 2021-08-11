@@ -99,6 +99,9 @@ public class ActivityServiceImpl implements ActivityService {
         return pagedResourcesAssembler.toModel(map, activityAssembler);
     }
 
+
+
+
     @Override
     public PagedModel<ActivityModel> findActivitiesByCreatedByUserEmailOrUserId(String email, String typeOfActivity,
                                                                                 String status, Pageable pageable) {

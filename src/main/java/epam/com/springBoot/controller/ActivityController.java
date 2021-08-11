@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class ActivityController implements ActivityApi {
 
@@ -22,7 +24,7 @@ public class ActivityController implements ActivityApi {
 
 
     @Override
-    public ActivityModel createActivity(@RequestBody ActivityDTO dto) {
+    public ActivityModel createActivity(@Valid @RequestBody ActivityDTO dto) {
         return activityAssembler.toModel(activityService.createActivity(dto));
     }
 

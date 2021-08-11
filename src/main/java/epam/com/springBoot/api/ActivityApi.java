@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Api(tags = "Activity management API")
 @RequestMapping("/api/v1/activities")
 public interface ActivityApi {
@@ -17,7 +19,7 @@ public interface ActivityApi {
     @ApiOperation("Create Activity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    ActivityModel createActivity(@RequestBody ActivityDTO dto);
+    ActivityModel createActivity(@Valid @RequestBody ActivityDTO dto);
 
 
     @ApiImplicitParams({
