@@ -1,14 +1,9 @@
 package epam.com.springBoot.service;
 
 import epam.com.springBoot.controller.model.UserModel;
-import epam.com.springBoot.dto.UserDTO;
-import epam.com.springBoot.model.Activity;
-import epam.com.springBoot.model.User;
-import org.springframework.data.domain.Page;
+import epam.com.springBoot.dto.user.UserDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
-
-import java.util.List;
 
 public interface UserService {
     PagedModel<UserModel> findAll(Pageable pageable);

@@ -16,6 +16,8 @@ public @interface TimeConstraint {
 
     String startTime();
 
+    String typeOfActivity();
+
     Class<?>[] groups() default {};
 
     Class<?>[] payload() default {};

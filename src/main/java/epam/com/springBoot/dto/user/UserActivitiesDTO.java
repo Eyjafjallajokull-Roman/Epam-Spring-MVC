@@ -1,25 +1,18 @@
-package epam.com.springBoot.dto;
+package epam.com.springBoot.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import epam.com.springBoot.dto.activity.ActivityAdminDTO;
 import epam.com.springBoot.dto.group.OnCreate;
 import epam.com.springBoot.dto.group.OnUpdate;
-import epam.com.springBoot.validator.annotation.PasswordConstraint;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
+import java.util.Set;
 
-@PasswordConstraint.List({
-        @PasswordConstraint(
-                field = "password",
-                fieldMatch = "confirmPassword",
-                message = "Passwords do not match!"
-        ),
-})
 @Data
-public class UserDTO {
-
+public class UserActivitiesDTO {
     @NotBlank(message = "'email' shouldn't be empty")
     @Email(message = "Please check if your email is correct")
     private String email;
@@ -40,28 +33,35 @@ public class UserDTO {
     @NotBlank(message = "'repeatPassword' shouldn't be empty!", groups = OnCreate.class)
     private String confirmPassword;
 
-    public UserDTO setEmail(String email) {
+    private Set<ActivityAdminDTO> activities;
+
+    public UserActivitiesDTO setEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public UserDTO setName(String name) {
+    public UserActivitiesDTO setName(String name) {
         this.name = name;
         return this;
     }
 
-    public UserDTO setSurname(String surname) {
+    public UserActivitiesDTO setSurname(String surname) {
         this.surname = surname;
         return this;
     }
 
-    public UserDTO setPassword(String password) {
+    public UserActivitiesDTO setPassword(String password) {
         this.password = password;
         return this;
     }
 
-    public UserDTO setConfirmPassword(String confirmPassword) {
+    public UserActivitiesDTO setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+        return this;
+    }
+
+    public UserActivitiesDTO setActivities(Set<ActivityAdminDTO> activities) {
+        this.activities = activities;
         return this;
     }
 }

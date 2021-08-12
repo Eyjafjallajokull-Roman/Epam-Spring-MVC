@@ -1,7 +1,6 @@
-package epam.com.springBoot.dto;
+package epam.com.springBoot.dto.activity;
 
 
-import epam.com.springBoot.dto.group.OnCreate;
 import epam.com.springBoot.validator.annotation.TimeConstraint;
 import lombok.Data;
 
@@ -13,19 +12,18 @@ import java.sql.Timestamp;
         @TimeConstraint(
                 endTime = "endTime",
                 startTime = "startTime",
+                typeOfActivity = "typeOfActivity",
                 message = "Incorrect data, check the time you enter " +
                         "(The start time must be greater than your current time and the end time must be greater than the start time)."
         )
 })
 @Data
-public class ActivityDTO {
+public class ActivityAdminDTO {
 
     private Long id;
-    @NotNull(message = "name shouldn`t be empty", groups = OnCreate.class)
+    @NotNull(message = "name shouldn`t be empty")
     private String name;
-    @NotNull(message = "startTime shouldn`t be empty", groups = OnCreate.class)
     private Timestamp startTime;
-    @NotNull(message = "endTime shouldn`t be empty", groups = OnCreate.class)
     private Timestamp endTime;
     private String status;
     @NotBlank(message = "type of activity shouldn`t be empty")
@@ -34,43 +32,48 @@ public class ActivityDTO {
     private String descriptionEng;
     private String descriptionRus;
 
-    public ActivityDTO setId(Long id) {
+    public ActivityAdminDTO setId(Long id) {
         this.id = id;
         return this;
     }
 
-    public ActivityDTO setName(String name) {
+    public ActivityAdminDTO setName(String name) {
         this.name = name;
         return this;
     }
 
-    public ActivityDTO setStartTime(Timestamp startTime) {
+    public ActivityAdminDTO setStartTime(Timestamp startTime) {
         this.startTime = startTime;
         return this;
     }
 
-    public ActivityDTO setEndTime(Timestamp endTime) {
+    public ActivityAdminDTO setEndTime(Timestamp endTime) {
         this.endTime = endTime;
         return this;
     }
 
-    public ActivityDTO setTypeOfActivity(String typeOfActivity) {
+    public ActivityAdminDTO setTypeOfActivity(String typeOfActivity) {
         this.typeOfActivity = typeOfActivity;
         return this;
     }
 
-    public ActivityDTO setDescriptionEng(String descriptionEng) {
+    public ActivityAdminDTO setDescriptionEng(String descriptionEng) {
         this.descriptionEng = descriptionEng;
         return this;
     }
 
-    public ActivityDTO setDescriptionRus(String descriptionRus) {
+    public ActivityAdminDTO setDescriptionRus(String descriptionRus) {
         this.descriptionRus = descriptionRus;
         return this;
     }
 
-    public ActivityDTO setCreatedByUserId(Long createdByUserId) {
+    public ActivityAdminDTO setCreatedByUserId(Long createdByUserId) {
         this.createdByUserId = createdByUserId;
+        return this;
+    }
+
+    public ActivityAdminDTO setStatus(String status) {
+        this.status = status;
         return this;
     }
 }

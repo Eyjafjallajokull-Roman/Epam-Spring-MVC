@@ -19,7 +19,7 @@ public class ActivityStatusScheduler {
     ActivityRepository activityRepository;
 
 
-    @Scheduled(fixedDelay = 2000L)
+    @Scheduled(fixedDelay = 1000000L)
     public void SetStatusForPassedActivities() {
         log.info("Scheduler working");
         List<Activity> all = activityRepository.findActivitiesByStatus(Status.ACCEPT);
@@ -27,7 +27,6 @@ public class ActivityStatusScheduler {
             if (a.getEndTime() != null) {
                 int change = a.getEndTime().compareTo(Timestamp.valueOf(LocalDateTime.now()));
                 if (change <= 0) {
-                    //якщо пройшов кінцевий час цієї активності вона стає не активна
                     a.setStatus(Status.FINISHED);
                     activityRepository.save(a);
                     log.info("Scheduler do something");

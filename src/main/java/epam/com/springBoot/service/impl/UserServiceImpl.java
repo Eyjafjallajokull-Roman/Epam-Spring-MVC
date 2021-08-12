@@ -2,7 +2,7 @@ package epam.com.springBoot.service.impl;
 
 import epam.com.springBoot.controller.assembler.UserAssembler;
 import epam.com.springBoot.controller.model.UserModel;
-import epam.com.springBoot.dto.UserDTO;
+import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.exceptions.ActivityNotFoundException;
 import epam.com.springBoot.exceptions.NoSuchUserException;
 import epam.com.springBoot.exceptions.UserAlreadyExist;

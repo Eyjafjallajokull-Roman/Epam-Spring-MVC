@@ -4,7 +4,7 @@ import epam.com.springBoot.api.UserApi;
 import epam.com.springBoot.controller.assembler.UserAssembler;
 import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.controller.model.UserModel;
-import epam.com.springBoot.dto.UserDTO;
+import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.dto.group.OnCreate;
 import epam.com.springBoot.dto.group.OnUpdate;
 import epam.com.springBoot.model.Status;
@@ -18,8 +18,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @RestController
 @Validated

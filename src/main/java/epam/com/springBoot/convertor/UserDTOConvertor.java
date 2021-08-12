@@ -1,6 +1,6 @@
 package epam.com.springBoot.convertor;
 
-import epam.com.springBoot.dto.UserDTO;
+import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.model.User;
 import org.springframework.core.convert.converter.Converter;
 

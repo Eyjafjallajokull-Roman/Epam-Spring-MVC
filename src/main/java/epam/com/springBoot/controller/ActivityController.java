@@ -3,7 +3,7 @@ package epam.com.springBoot.controller;
 import epam.com.springBoot.api.ActivityApi;
 import epam.com.springBoot.controller.assembler.ActivityAssembler;
 import epam.com.springBoot.controller.model.ActivityModel;
-import epam.com.springBoot.dto.ActivityDTO;
+import epam.com.springBoot.dto.activity.ActivityAdminDTO;
 import epam.com.springBoot.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +24,12 @@ public class ActivityController implements ActivityApi {
 
 
     @Override
-    public ActivityModel createActivity(@Valid @RequestBody ActivityDTO dto) {
+    public ActivityModel createActivity(@Valid @RequestBody ActivityAdminDTO dto) {
         return activityAssembler.toModel(activityService.createActivity(dto));
     }
-
+    
     @Override
-    public ActivityModel updateActivity(@RequestBody ActivityDTO dto, @PathVariable Long id) {
+    public ActivityModel updateActivity(@RequestBody ActivityAdminDTO dto, @PathVariable Long id) {
         return activityAssembler.toModel(activityService.updateActivity(dto, id));
     }
 

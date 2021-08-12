@@ -1,6 +1,6 @@
 package epam.com.springBoot.service;
 
-import epam.com.springBoot.dto.UserDTO;
+import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.exceptions.UserAlreadyExist;
 import epam.com.springBoot.exceptions.UserNotFoundException;
 import epam.com.springBoot.model.User;

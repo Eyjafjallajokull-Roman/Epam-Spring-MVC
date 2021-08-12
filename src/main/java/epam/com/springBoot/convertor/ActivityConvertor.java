@@ -1,13 +1,13 @@
 package epam.com.springBoot.convertor;
 
-import epam.com.springBoot.dto.ActivityDTO;
+import epam.com.springBoot.dto.activity.ActivityAdminDTO;
 import epam.com.springBoot.model.Activity;
 import epam.com.springBoot.model.TypeOfActivity;
 import org.springframework.core.convert.converter.Converter;
 
-public class ActivityConvertor implements Converter<ActivityDTO, Activity> {
+public class ActivityConvertor implements Converter<ActivityAdminDTO, Activity> {
     @Override
-    public Activity convert(ActivityDTO dto) {
+    public Activity convert(ActivityAdminDTO dto) {
         return new Activity()
                 .setDescriptionEng(dto.getDescriptionEng())
                 .setDescriptionRus(dto.getDescriptionRus())

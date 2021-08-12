@@ -1,6 +1,6 @@
 package epam.com.springBoot.service;
 
-import epam.com.springBoot.dto.ActivityDTO;
+import epam.com.springBoot.dto.activity.ActivityAdminDTO;
 import epam.com.springBoot.exceptions.ActivityNotFoundException;
 import epam.com.springBoot.model.Activity;
 import epam.com.springBoot.repository.ActivityRepository;
@@ -42,13 +42,13 @@ public class ActivityServiceTest {
     @Test
     public void getByIdTest() {
         Activity activity = ActivityDataUtil.createActivity();
-        ActivityDTO activityDTO = ActivityDataUtil.createActivityDto();
+        ActivityAdminDTO activityAdminDTO = ActivityDataUtil.createActivityDto();
         when(activityRepository.findById(activity.getId())).thenReturn(Optional.of(activity));
-        when(conversionService.convert(activity, ActivityDTO.class)).thenReturn(activityDTO);
+        when(conversionService.convert(activity, ActivityAdminDTO.class)).thenReturn(activityAdminDTO);
 
-        ActivityDTO activityDTO1 = activityService.getById(activity.getId());
+        ActivityAdminDTO activityAdminDTO1 = activityService.getById(activity.getId());
 
-        assertThat(activityDTO1, allOf(
+        assertThat(activityAdminDTO1, allOf(
                 hasProperty("name", equalTo(activity.getName())),
                 hasProperty("descriptionEng", equalTo(activity.getDescriptionEng())),
                 hasProperty("id", equalTo(activity.getId()))
@@ -64,12 +64,12 @@ public class ActivityServiceTest {
     @Test
     public void createActivityTest() {
         Activity activity = ActivityDataUtil.createActivity();
-        ActivityDTO activityDTO = ActivityDataUtil.createActivityDto();
+        ActivityAdminDTO activityAdminDTO = ActivityDataUtil.createActivityDto();
         when(activityRepository.save(any())).thenReturn(activity);
-        when(conversionService.convert(activityDTO, Activity.class)).thenReturn(activity);
-        when(conversionService.convert(activity, ActivityDTO.class)).thenReturn(activityDTO);
+        when(conversionService.convert(activityAdminDTO, Activity.class)).thenReturn(activity);
+        when(conversionService.convert(activity, ActivityAdminDTO.class)).thenReturn(activityAdminDTO);
 
-        ActivityDTO result = activityService.createActivity(activityDTO);
+        ActivityAdminDTO result = activityService.createActivity(activityAdminDTO);
 
         assertThat(result, allOf(
                 hasProperty("name", equalTo(activity.getName())),

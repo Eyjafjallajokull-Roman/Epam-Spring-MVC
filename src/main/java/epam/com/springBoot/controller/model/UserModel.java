@@ -1,7 +1,7 @@
 package epam.com.springBoot.controller.model;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import epam.com.springBoot.dto.UserDTO;
+import epam.com.springBoot.dto.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

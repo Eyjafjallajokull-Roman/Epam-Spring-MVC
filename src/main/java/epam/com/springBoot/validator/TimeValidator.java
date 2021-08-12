@@ -12,12 +12,14 @@ public class TimeValidator implements ConstraintValidator<TimeConstraint, Object
 
     private String endTimeField;
     private String startTimeField;
+    private String typeOfActivityField;
 
 
     @Override
     public void initialize(TimeConstraint constraintAnnotation) {
         endTimeField = constraintAnnotation.endTime();
         startTimeField = constraintAnnotation.startTime();
+        typeOfActivityField = constraintAnnotation.typeOfActivity();
     }
 
     @SneakyThrows
@@ -29,15 +31,26 @@ public class TimeValidator implements ConstraintValidator<TimeConstraint, Object
         final Field endTimeField = value.getClass().getDeclaredField(this.endTimeField);
         endTimeField.setAccessible(true);
 
+        final Field typeOfActivityField = value.getClass().getDeclaredField(this.typeOfActivityField);
+        typeOfActivityField.setAccessible(true);
+
         final Timestamp startTime = (Timestamp) startTimeField.get(value);
         final Timestamp endTime = (Timestamp) endTimeField.get(value);
-
-        if (endTime == null || startTime == null) {
-            return false;
-        }
+        final String typeOfActivity = (String) typeOfActivityField.get(value);
         Timestamp now = new Timestamp(System.currentTimeMillis());
-        boolean b = startTime.after(now) && startTime.before(endTime);
-        return b;
+
+        if (typeOfActivity.equals("TIME_TRACKER"))
+            return startTime != null && startTime.after(now);
+
+        else if (typeOfActivity.equals("REMINDER"))
+            return endTime != null && now.before(endTime);
+
+        else {
+            if (endTime == null || startTime == null) {
+                return false;
+            }
+            return startTime.after(now) && startTime.before(endTime);
+        }
     }
 
 

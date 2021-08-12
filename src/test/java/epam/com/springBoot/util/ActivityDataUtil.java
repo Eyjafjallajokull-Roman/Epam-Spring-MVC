@@ -1,6 +1,6 @@
 package epam.com.springBoot.util;
 
-import epam.com.springBoot.dto.ActivityDTO;
+import epam.com.springBoot.dto.activity.ActivityAdminDTO;
 import epam.com.springBoot.model.Activity;
 import epam.com.springBoot.model.Status;
 import epam.com.springBoot.model.TypeOfActivity;
@@ -32,8 +32,8 @@ public class ActivityDataUtil {
                 .setEndTime(END_TIME);
     }
 
-    public static ActivityDTO createActivityDto() {
-        return new ActivityDTO()
+    public static ActivityAdminDTO createActivityDto() {
+        return new ActivityAdminDTO()
                 .setId(ID)
                 .setTypeOfActivity(String.valueOf(TYPE_OF_ACTIVITY))
                 .setName(NAME)

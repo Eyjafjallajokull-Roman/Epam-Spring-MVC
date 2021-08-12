@@ -2,7 +2,7 @@ package epam.com.springBoot.controller.assembler;
 
 import epam.com.springBoot.controller.UserController;
 import epam.com.springBoot.controller.model.UserModel;
-import epam.com.springBoot.dto.UserDTO;
+import epam.com.springBoot.dto.user.UserDTO;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
@@ -30,6 +30,7 @@ public class UserAssembler extends RepresentationModelAssemblerSupport<UserDTO, 
         Link create = linkTo(methodOn(UserController.class).createUser(entity)).withRel(CREATE_USER);
         Link update = linkTo(methodOn(UserController.class).update(entity,entity.getEmail())).withRel(UPDATE_USER);
         Link delete = linkTo(methodOn(UserController.class).delete(entity.getEmail())).withRel(DELETE_USER);
+
 
 
         userModel.add(get, create, update, delete);

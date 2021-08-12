@@ -1,6 +1,6 @@
 package epam.com.springBoot.util;
 
-import epam.com.springBoot.dto.UserDTO;
+import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.model.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

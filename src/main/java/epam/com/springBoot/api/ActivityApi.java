@@ -1,13 +1,15 @@
 package epam.com.springBoot.api;
 
 import epam.com.springBoot.controller.model.ActivityModel;
-import epam.com.springBoot.dto.ActivityDTO;
+import epam.com.springBoot.dto.activity.ActivityAdminDTO;
+import epam.com.springBoot.dto.group.OnCreate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,8 +21,7 @@ public interface ActivityApi {
     @ApiOperation("Create Activity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    ActivityModel createActivity(@Valid @RequestBody ActivityDTO dto);
-
+    ActivityModel createActivity(@Valid @Validated(OnCreate.class) @RequestBody ActivityAdminDTO dto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Activity id"),
@@ -28,7 +29,7 @@ public interface ActivityApi {
     @ApiOperation("Update Activity")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    ActivityModel updateActivity(@RequestBody ActivityDTO dto, @PathVariable Long id);
+    ActivityModel updateActivity(@RequestBody ActivityAdminDTO dto, @PathVariable Long id);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Activity id"),

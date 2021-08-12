@@ -1,23 +1,19 @@
 package epam.com.springBoot.service;
 
 import epam.com.springBoot.controller.model.ActivityModel;
-import epam.com.springBoot.dto.ActivityDTO;
-import epam.com.springBoot.model.Activity;
+import epam.com.springBoot.dto.activity.ActivityAdminDTO;
 import epam.com.springBoot.model.Status;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
-
-import java.util.List;
 
 public interface ActivityService {
     PagedModel<ActivityModel> findAllActivities(Pageable pageable);
 
-    ActivityDTO createActivity(ActivityDTO activityDTO);
+    ActivityAdminDTO createActivity(ActivityAdminDTO activityAdminDTO);
 
-    ActivityDTO updateActivity(ActivityDTO activityDTO, Long id);
+    ActivityAdminDTO updateActivity(ActivityAdminDTO activityAdminDTO, Long id);
 
-    ActivityDTO getById(Long id);
+    ActivityAdminDTO getById(Long id);
 
     PagedModel<ActivityModel> findActivitiesByTypeOfActivityAndStatus(String typeOfActivity, Status status, Pageable pageable);
 

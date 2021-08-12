@@ -1,7 +1,7 @@
 package epam.com.springBoot.service.impl;
 
-import epam.com.springBoot.dto.ActivityDTO;
-import epam.com.springBoot.dto.UserDTO;
+import epam.com.springBoot.dto.activity.ActivityAdminDTO;
+import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.model.Activity;
 import epam.com.springBoot.model.TypeOfActivity;
 import epam.com.springBoot.model.User;
@@ -31,25 +31,25 @@ public class MappingServiceImpl implements MappingService {
     }
 
     @Override
-    public Activity getActivityData(ActivityDTO activityDTO, Activity activity) {
-        String name = activityDTO.getName();
+    public Activity getActivityData(ActivityAdminDTO activityAdminDTO, Activity activity) {
+        String name = activityAdminDTO.getName();
         if (Objects.nonNull(name))
             activity.setName(name);
-        String descriptionEng = activityDTO.getDescriptionEng();
+        String descriptionEng = activityAdminDTO.getDescriptionEng();
         if (Objects.nonNull(descriptionEng))
             activity.setDescriptionEng(descriptionEng);
-        String descriptionRus = activityDTO.getDescriptionRus();
+        String descriptionRus = activityAdminDTO.getDescriptionRus();
         if (Objects.nonNull(descriptionRus))
             activity.setDescriptionRus(descriptionRus);
-        String typeOfActivity = activityDTO.getTypeOfActivity();
+        String typeOfActivity = activityAdminDTO.getTypeOfActivity();
         if (Objects.nonNull(typeOfActivity))
             activity.setTypeOfActivity(TypeOfActivity.valueOf(typeOfActivity));
-        Timestamp startTime = activityDTO.getStartTime();
+        Timestamp startTime = activityAdminDTO.getStartTime();
         if (Objects.nonNull(startTime))
             activity.setStartTime(startTime);
-        Timestamp endTime = activityDTO.getEndTime();
+        Timestamp endTime = activityAdminDTO.getEndTime();
         if (Objects.nonNull(endTime))
-            activity.setEndTime(activityDTO.getEndTime());
+            activity.setEndTime(activityAdminDTO.getEndTime());
 
         return activity;
     }

@@ -2,7 +2,7 @@ package epam.com.springBoot.controller.assembler;
 
 import epam.com.springBoot.controller.ActivityController;
 import epam.com.springBoot.controller.model.ActivityModel;
-import epam.com.springBoot.dto.ActivityDTO;
+import epam.com.springBoot.dto.activity.ActivityAdminDTO;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class ActivityAssembler extends RepresentationModelAssemblerSupport<ActivityDTO, ActivityModel> {
+public class ActivityAssembler extends RepresentationModelAssemblerSupport<ActivityAdminDTO, ActivityModel> {
 
     public static final String GET_REL = "get_activity";
     public static final String CREATE_ACTIVITY = "create_activity";
@@ -23,7 +23,7 @@ public class ActivityAssembler extends RepresentationModelAssemblerSupport<Activ
     }
 
     @Override
-    public ActivityModel toModel(ActivityDTO entity) {
+    public ActivityModel toModel(ActivityAdminDTO entity) {
         ActivityModel activityModel = new ActivityModel(entity);
         Link get = linkTo(methodOn(ActivityController.class).getActivity(entity.getId())).withRel(GET_REL);
         Link create = linkTo(methodOn(ActivityController.class).createActivity(entity)).withRel(CREATE_ACTIVITY);
