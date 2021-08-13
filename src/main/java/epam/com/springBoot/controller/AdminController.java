@@ -3,6 +3,7 @@ package epam.com.springBoot.controller;
 import epam.com.springBoot.api.AdminApi;
 import epam.com.springBoot.controller.assembler.UserAssembler;
 import epam.com.springBoot.controller.model.ActivityModel;
+import epam.com.springBoot.controller.model.UserActivitiesModel;
 import epam.com.springBoot.controller.model.UserModel;
 import epam.com.springBoot.model.Status;
 import epam.com.springBoot.service.ActivityService;
@@ -30,7 +31,7 @@ public class AdminController implements AdminApi {
 
 
     @Override
-    public PagedModel<UserModel> getAllUsers(Pageable pageable) {
+    public PagedModel<UserActivitiesModel> getAllUsers(Pageable pageable) {
         return userService.findAll(pageable);
     }
 

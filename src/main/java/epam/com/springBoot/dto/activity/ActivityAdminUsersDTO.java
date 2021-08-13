@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 
@@ -35,7 +36,7 @@ public class ActivityAdminUsersDTO {
     private Long createdByUserId;
     private String descriptionEng;
     private String descriptionRus;
-    private Set<UserDTO> userSet;
+    private List<UserDTO> userSet;
 
     public ActivityAdminUsersDTO setId(Long id) {
         this.id = id;
@@ -82,7 +83,7 @@ public class ActivityAdminUsersDTO {
         return this;
     }
 
-    public ActivityAdminUsersDTO setUserSet(Set<UserDTO> userSet) {
+    public ActivityAdminUsersDTO setUserList(List<UserDTO> userSet) {
         this.userSet = userSet;
         return this;
     }

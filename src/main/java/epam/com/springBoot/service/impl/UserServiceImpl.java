@@ -1,7 +1,10 @@
 package epam.com.springBoot.service.impl;
 
+import epam.com.springBoot.controller.assembler.UserActivitiesAssembler;
 import epam.com.springBoot.controller.assembler.UserAssembler;
+import epam.com.springBoot.controller.model.UserActivitiesModel;
 import epam.com.springBoot.controller.model.UserModel;
+import epam.com.springBoot.dto.user.UserActivitiesDTO;
 import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.exceptions.ActivityNotFoundException;
 import epam.com.springBoot.exceptions.NoSuchUserException;
@@ -22,35 +25,38 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private ActivityRepository activityRepository;
-
     @Autowired
     private ConversionService conversionService;
-
     @Autowired
     private UserAssembler userAssembler;
-
+    @Autowired
+    private UserActivitiesAssembler userActivitiesAssembler;
+    @Autowired
+    private PagedResourcesAssembler<UserActivitiesDTO> userActivitiesResourceAssembler;
     @Autowired
     private MappingService mappingService;
-
     @Autowired
     private PagedResourcesAssembler<UserDTO> pagedResourcesAssembler;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
 
     @Override
-    public PagedModel<UserModel> findAll(Pageable pageable) {
+    public PagedModel<UserActivitiesModel> findAll(Pageable pageable) {
         log.info("Find All - find all users in User Service");
         Page<User> pageResult = userRepository.findAll(pageable);
-        Page<UserDTO> map = pageResult.map(user -> conversionService.convert(user, UserDTO.class));
-        return pagedResourcesAssembler.toModel(map, userAssembler);
+        Page<UserActivitiesDTO> map = pageResult.map(user -> conversionService.convert(user, UserActivitiesDTO.class));
+        return userActivitiesResourceAssembler.toModel(map, userActivitiesAssembler);
     }
 
     @Override
@@ -60,6 +66,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExist();
         }
         User user = conversionService.convert(userDTO, User.class);
+//        Objects.requireNonNull(user).setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.CLIENT);
         user = userRepository.save(user);
         log.info("User was created successfully");

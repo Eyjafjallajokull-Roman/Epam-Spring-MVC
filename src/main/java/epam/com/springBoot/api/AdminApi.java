@@ -1,6 +1,7 @@
 package epam.com.springBoot.api;
 
 import epam.com.springBoot.controller.model.ActivityModel;
+import epam.com.springBoot.controller.model.UserActivitiesModel;
 import epam.com.springBoot.controller.model.UserModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -26,7 +27,7 @@ public interface AdminApi {
     @ApiOperation("Get all Users with pagination")
     @GetMapping("/all-users")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    PagedModel<UserModel> getAllUsers(Pageable pageable);
+    PagedModel<UserActivitiesModel> getAllUsers(Pageable pageable);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "typeOfActivity", paramType = "query", required = true, value = "Activity TypeOfActivity"),

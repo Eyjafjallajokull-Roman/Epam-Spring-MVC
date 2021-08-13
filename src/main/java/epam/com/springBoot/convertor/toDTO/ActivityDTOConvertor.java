@@ -1,4 +1,4 @@
-package epam.com.springBoot.convertor;
+package epam.com.springBoot.convertor.toDTO;
 
 import epam.com.springBoot.dto.activity.ActivityAdminDTO;
 import epam.com.springBoot.model.Activity;

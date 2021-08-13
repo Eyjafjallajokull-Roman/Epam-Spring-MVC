@@ -9,6 +9,7 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -33,7 +34,7 @@ public class UserActivitiesDTO {
     @NotBlank(message = "'repeatPassword' shouldn't be empty!", groups = OnCreate.class)
     private String confirmPassword;
 
-    private Set<ActivityAdminDTO> activities;
+    private List<ActivityAdminDTO> activities;
 
     public UserActivitiesDTO setEmail(String email) {
         this.email = email;
@@ -60,7 +61,7 @@ public class UserActivitiesDTO {
         return this;
     }
 
-    public UserActivitiesDTO setActivities(Set<ActivityAdminDTO> activities) {
+    public UserActivitiesDTO setListActivities(List<ActivityAdminDTO> activities) {
         this.activities = activities;
         return this;
     }

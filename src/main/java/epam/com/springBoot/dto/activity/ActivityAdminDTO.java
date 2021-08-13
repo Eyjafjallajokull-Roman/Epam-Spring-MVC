@@ -31,6 +31,7 @@ public class ActivityAdminDTO {
     private Long createdByUserId;
     private String descriptionEng;
     private String descriptionRus;
+    
 
     public ActivityAdminDTO setId(Long id) {
         this.id = id;

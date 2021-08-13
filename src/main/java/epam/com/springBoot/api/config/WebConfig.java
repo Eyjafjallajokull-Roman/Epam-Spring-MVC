@@ -1,9 +1,11 @@
 package epam.com.springBoot.api.config;
 
-import epam.com.springBoot.convertor.ActivityConvertor;
-import epam.com.springBoot.convertor.ActivityDTOConvertor;
-import epam.com.springBoot.convertor.UserConvertor;
-import epam.com.springBoot.convertor.UserDTOConvertor;
+import epam.com.springBoot.convertor.fromDTO.ActivityConvertor;
+import epam.com.springBoot.convertor.fromDTO.UserActivityConvertor;
+import epam.com.springBoot.convertor.fromDTO.UserConvertor;
+import epam.com.springBoot.convertor.toDTO.ActivityDTOConvertor;
+import epam.com.springBoot.convertor.toDTO.UserActivityDTOConvertor;
+import epam.com.springBoot.convertor.toDTO.UserDTOConvertor;
 import epam.com.springBoot.interceptor.AdminInterceptor;
 import epam.com.springBoot.interceptor.UserInterceptor;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(new UserConvertor());
         registry.addConverter(new UserDTOConvertor());
         registry.addConverter(new ActivityDTOConvertor());
+        registry.addConverter(new UserActivityConvertor());
+        registry.addConverter(new UserActivityDTOConvertor());
     }
 
     @Override
