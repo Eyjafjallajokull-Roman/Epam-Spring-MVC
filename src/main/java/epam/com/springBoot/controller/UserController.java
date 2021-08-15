@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @RestController
 @Validated
 public class UserController implements UserApi {
@@ -30,7 +32,7 @@ public class UserController implements UserApi {
     private ActivityService activityService;
 
     @Override
-    public UserModel createUser(@RequestBody @Validated(OnCreate.class) UserDTO dto) {
+    public UserModel createUser(@RequestBody @Validated(OnCreate.class) UserDTO dto, Principal principal) {
         return userAssembler.toModel(userService.createUser(dto));
     }
 

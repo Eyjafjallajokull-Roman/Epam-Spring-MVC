@@ -10,8 +10,11 @@ import epam.com.springBoot.convertor.toDTO.UserActivityDTOConvertor;
 import epam.com.springBoot.convertor.toDTO.UserDTOConvertor;
 import epam.com.springBoot.interceptor.AdminInterceptor;
 import epam.com.springBoot.interceptor.UserInterceptor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -30,6 +33,15 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(new UserActivityDTOConvertor());
         registry.addConverter(new ActivityUserConvertor());
         registry.addConverter(new ActivityUsersDTOConvertor());
+    }
+
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        final FilterRegistrationBean resolver = new FilterRegistrationBean();
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        resolver.setFilter(characterEncodingFilter);
+        return resolver;
     }
 
     @Override

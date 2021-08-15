@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -44,8 +45,8 @@ public class UserServiceImpl implements UserService {
     private MappingService mappingService;
     @Autowired
     private PagedResourcesAssembler<UserDTO> pagedResourcesAssembler;
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExist();
         }
         User user = conversionService.convert(userDTO, User.class);
-//        Objects.requireNonNull(user).setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.CLIENT);
         user = userRepository.save(user);
         log.info("User was created successfully");
@@ -143,7 +144,6 @@ public class UserServiceImpl implements UserService {
             userRepository.deleteUserFromActivity(userId, activityId);
         log.info("User was successfully deleted to activity");
     }
-
 
 
 }

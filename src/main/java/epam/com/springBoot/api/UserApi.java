@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Api(tags = "User management API")
 @RequestMapping("/api/v1/users")
@@ -34,7 +35,7 @@ public interface UserApi {
     @ApiOperation("Create User")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    UserModel createUser(@Valid @RequestBody @Validated(OnCreate.class) UserDTO dto);
+    UserModel createUser(@Valid @RequestBody @Validated(OnCreate.class) UserDTO dto, Principal principal);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "email", paramType = "path", required = true, value = "User email"),
