@@ -37,4 +37,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     Page<Activity> findActivitiesByCreatedByUserIdOrUserIdAndTypeOfActivity(Long userId, String typeOfActivity,
                                                                             String status, Pageable pageable);
 
+    List<Activity> findActivitiesByCreatedByUserId(Long id);
+
 }

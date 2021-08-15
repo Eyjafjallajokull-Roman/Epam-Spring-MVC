@@ -3,7 +3,6 @@ package epam.com.springBoot.service.impl;
 import epam.com.springBoot.controller.assembler.UserActivitiesAssembler;
 import epam.com.springBoot.controller.assembler.UserAssembler;
 import epam.com.springBoot.controller.model.UserActivitiesModel;
-import epam.com.springBoot.controller.model.UserModel;
 import epam.com.springBoot.dto.user.UserActivitiesDTO;
 import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.exceptions.ActivityNotFoundException;
@@ -24,8 +23,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -55,6 +52,7 @@ public class UserServiceImpl implements UserService {
     public PagedModel<UserActivitiesModel> findAll(Pageable pageable) {
         log.info("Find All - find all users in User Service");
         Page<User> pageResult = userRepository.findAll(pageable);
+        pageResult = pageResult.map(user -> user.setActivities(activityRepository.findActivitiesByCreatedByUserId(user.getId())));
         Page<UserActivitiesDTO> map = pageResult.map(user -> conversionService.convert(user, UserActivitiesDTO.class));
         return userActivitiesResourceAssembler.toModel(map, userActivitiesAssembler);
     }
@@ -98,14 +96,22 @@ public class UserServiceImpl implements UserService {
         return conversionService.convert(user, UserDTO.class);
     }
 
+
     @Override
-    public PagedModel<UserModel> findAllUsersByActivityId(Long id, Pageable pageable) {
+    public UserActivitiesDTO getByEmailUADTO(String email) {
+        log.info("Get User by email: " + email);
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        return conversionService.convert(user, UserActivitiesDTO.class);
+    }
+
+    @Override
+    public PagedModel<UserActivitiesModel> findAllUsersByActivityId(Long id, Pageable pageable) {
         log.info("Find all Users by activity id " + id);
         Long activityId = activityRepository.findById(id).orElseThrow(ActivityNotFoundException::new).getId();
         Page<User> page = userRepository.findAllUsersByActivityId(activityId, pageable);
-        Page<UserDTO> map = page.map(user -> conversionService.convert(user, UserDTO.class));
-
-        return pagedResourcesAssembler.toModel(map, userAssembler);
+        page = page.map(user -> user.setActivities(activityRepository.findActivitiesByCreatedByUserId(user.getId())));
+        Page<UserActivitiesDTO> map = page.map(user -> conversionService.convert(user, UserActivitiesDTO.class));
+        return userActivitiesResourceAssembler.toModel(map, userActivitiesAssembler);
     }
 
 
@@ -137,5 +143,7 @@ public class UserServiceImpl implements UserService {
             userRepository.deleteUserFromActivity(userId, activityId);
         log.info("User was successfully deleted to activity");
     }
+
+
 
 }

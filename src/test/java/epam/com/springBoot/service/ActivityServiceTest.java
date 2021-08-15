@@ -22,7 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ActivityServiceTest {
@@ -37,7 +37,7 @@ public class ActivityServiceTest {
     ConversionService conversionService;
 
     @Spy
-    MappingService mappingService = new MappingServiceImpl();
+    private static MappingService mappingService = new MappingServiceImpl();
 
     @Test
     public void getByIdTest() {
@@ -62,7 +62,7 @@ public class ActivityServiceTest {
     }
 
     @Test
-    public void createActivityTest() {
+    void createActivityTest() {
         Activity activity = ActivityDataUtil.createActivity();
         ActivityAdminDTO activityAdminDTO = ActivityDataUtil.createActivityDto();
         when(activityRepository.save(any())).thenReturn(activity);
@@ -77,6 +77,72 @@ public class ActivityServiceTest {
                 hasProperty("id", equalTo(activity.getId()))));
         //todo property for status
     }
+
+    @Test
+    void updateActivityTest() {
+        Activity activity = ActivityDataUtil.createActivity();
+        ActivityAdminDTO activityAdminDTO = ActivityDataUtil.createActivityDto();
+        when(conversionService.convert(activity, ActivityAdminDTO.class)).thenReturn(activityAdminDTO);
+        when(activityRepository.findById(activity.getId())).thenReturn(Optional.of(activity));
+
+
+        ActivityAdminDTO result = activityService.updateActivity(activityAdminDTO, activityAdminDTO.getId());
+
+        verify(activityRepository, times(1)).save(activity);
+
+        assertThat(result, allOf(
+                hasProperty("name", equalTo(activity.getName())),
+                hasProperty("descriptionEng", equalTo(activity.getDescriptionEng())),
+                hasProperty("id", equalTo(activity.getId()))));
+
+    }
+
+    @Test
+    void updateActivityActivityNotFoundTest() {
+        ActivityAdminDTO activityAdminDTO = ActivityDataUtil.createActivityDto();
+        when(activityRepository.findById(ID)).thenReturn(Optional.empty());
+        assertThrows(ActivityNotFoundException.class, () -> activityService.updateActivity(activityAdminDTO, ID));
+    }
+
+
+    @Test
+    void deleteActivityTest() {
+        Activity activity = ActivityDataUtil.createActivity();
+        when(activityRepository.findById(activity.getId())).thenReturn(Optional.of(activity));
+
+        activityService.delete(ID);
+        verify(activityRepository, times(1)).deleteById(activity.getId());
+
+    }
+
+
+    @Test
+    void setOnDeleteTest() {
+        Activity activity = ActivityDataUtil.createActivity();
+        when(activityRepository.findById(ID)).thenReturn(Optional.of(activity));
+        activityService.setOnDelete(ID);
+        verify(activityRepository, times(1)).save(activity);
+
+    }
+
+    @Test
+    void acceptActivityTest() {
+        Activity activity = ActivityDataUtil.createActivity();
+        when(activityRepository.getById(ID)).thenReturn(activity);
+        activityService.acceptActivity(ID);
+        verify(activityRepository, times(1)).save(activity);
+    }
+
+    @Test
+    void declineActivityTest() {
+        Activity activity = ActivityDataUtil.createActivity();
+        when(activityRepository.getById(ID)).thenReturn(activity);
+        activityService.declineActivity(ID);
+        verify(activityRepository, times(1)).save(activity);
+
+    }
+
+
 
 
 }

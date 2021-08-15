@@ -1,12 +1,16 @@
 package epam.com.springBoot.service;
 
 import epam.com.springBoot.dto.user.UserDTO;
+import epam.com.springBoot.exceptions.NoSuchUserException;
 import epam.com.springBoot.exceptions.UserAlreadyExist;
 import epam.com.springBoot.exceptions.UserNotFoundException;
+import epam.com.springBoot.model.Activity;
 import epam.com.springBoot.model.User;
+import epam.com.springBoot.repository.ActivityRepository;
 import epam.com.springBoot.repository.UserRepository;
 import epam.com.springBoot.service.impl.MappingServiceImpl;
 import epam.com.springBoot.service.impl.UserServiceImpl;
+import epam.com.springBoot.util.ActivityDataUtil;
 import epam.com.springBoot.util.TestDataUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +22,7 @@ import org.springframework.core.convert.ConversionService;
 
 import java.util.Optional;
 
+import static epam.com.springBoot.util.TestDataUtil.ID;
 import static epam.com.springBoot.util.TestDataUtil.TEST_EMAIL;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -32,6 +37,9 @@ public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private ActivityRepository activityRepository;
 
     @Mock
     private ConversionService conversionService;
@@ -127,4 +135,38 @@ public class UserServiceTest {
         when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.empty());
         assertThrows(UserNotFoundException.class, () -> userService.update(userDTO, userDTO.getEmail()));
     }
+
+    @Test
+    void addUserToActivityTest() {
+        User user = TestDataUtil.createUser();
+        Activity activity = ActivityDataUtil.createActivity();
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(user));
+        when(activityRepository.existsById(ActivityDataUtil.ID)).thenReturn(true);
+
+        userService.addUserToActivity(user.getEmail(), activity.getId());
+
+        verify(userRepository, times(1)).addUserToActivity(ID, ActivityDataUtil.ID);
+
+    }
+@Test
+    void addUserToActivityNoSuchUserTest() {
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.empty());
+        assertThrows(NoSuchUserException.class, () -> userService.addUserToActivity(TEST_EMAIL, ActivityDataUtil.ID));
+    }
+
+    @Test
+    void deleteUserFromActivityTest() {
+        User user = TestDataUtil.createUser();
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(user));
+        when(activityRepository.existsById(ActivityDataUtil.ID)).thenReturn(true);
+        userService.deleteUserFromActivity(TEST_EMAIL, ActivityDataUtil.ID);
+        verify(userRepository, times(1)).deleteUserFromActivity(ID, ActivityDataUtil.ID);
+    }
+@Test
+    void deleteUserToActivityNoSuchUserTest() {
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.empty());
+        assertThrows(NoSuchUserException.class, () -> userService.deleteUserFromActivity(TEST_EMAIL, ActivityDataUtil.ID));
+    }
+
+
 }

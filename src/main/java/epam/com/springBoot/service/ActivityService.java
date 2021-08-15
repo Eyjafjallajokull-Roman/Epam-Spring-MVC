@@ -1,13 +1,15 @@
 package epam.com.springBoot.service;
 
+import epam.com.springBoot.controller.model.ActivityAdminUsersModel;
 import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.dto.activity.ActivityAdminDTO;
+import epam.com.springBoot.dto.activity.ActivityAdminUsersDTO;
 import epam.com.springBoot.model.Status;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
 public interface ActivityService {
-    PagedModel<ActivityModel> findAllActivities(Pageable pageable);
+    PagedModel<ActivityAdminUsersModel> findAllActivities(Pageable pageable);
 
     ActivityAdminDTO createActivity(ActivityAdminDTO activityAdminDTO);
 
@@ -15,12 +17,16 @@ public interface ActivityService {
 
     ActivityAdminDTO getById(Long id);
 
-    PagedModel<ActivityModel> findActivitiesByTypeOfActivityAndStatus(String typeOfActivity, Status status, Pageable pageable);
+    PagedModel<ActivityAdminUsersModel> findActivitiesByTypeOfActivityAndStatus(String typeOfActivity, Status status, Pageable pageable);
 
-    PagedModel<ActivityModel> findActivitiesByCreatedByUserEmailOrUserId(String email, String typeOfActivity,
+    PagedModel<ActivityAdminUsersModel> findActivitiesByCreatedByUserEmailOrUserId(String email, String typeOfActivity,
                                                                          String status, Pageable pageable);
 
+    PagedModel<ActivityAdminUsersModel> findActivitiesByCreatedByUserIdAndStatusAU(String email, Status status, Pageable pageable);
+
     PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatus(String email, Status status, Pageable pageable);
+
+    public ActivityAdminUsersDTO getByIdAU(Long id);
 
     void delete(Long id);
 

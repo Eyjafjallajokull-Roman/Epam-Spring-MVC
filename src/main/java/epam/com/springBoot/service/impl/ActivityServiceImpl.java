@@ -1,8 +1,11 @@
 package epam.com.springBoot.service.impl;
 
 import epam.com.springBoot.controller.assembler.ActivityAssembler;
+import epam.com.springBoot.controller.assembler.ActivityUsersAssembler;
+import epam.com.springBoot.controller.model.ActivityAdminUsersModel;
 import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.dto.activity.ActivityAdminDTO;
+import epam.com.springBoot.dto.activity.ActivityAdminUsersDTO;
 import epam.com.springBoot.exceptions.ActivityNotFoundException;
 import epam.com.springBoot.exceptions.UserNotFoundException;
 import epam.com.springBoot.model.Activity;
@@ -41,16 +44,21 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityAssembler activityAssembler;
 
+    @Autowired
+    private ActivityUsersAssembler activityUsersAssembler;
+
+    @Autowired
+    private PagedResourcesAssembler<ActivityAdminUsersDTO> activityUsersAssemblerPaged;
 
     @Autowired
     private PagedResourcesAssembler<ActivityAdminDTO> pagedResourcesAssembler;
 
 
     @Override
-    public PagedModel<ActivityModel> findAllActivities(Pageable pageable) {
+    public PagedModel<ActivityAdminUsersModel> findAllActivities(Pageable pageable) {
         Page<Activity> page = activityRepository.findAll(pageable);
-        Page<ActivityAdminDTO> activityDTOS = page.map(activity -> conversionService.convert(activity, ActivityAdminDTO.class));
-        return pagedResourcesAssembler.toModel(activityDTOS, activityAssembler);
+        Page<ActivityAdminUsersDTO> activityDTOS = page.map(activity -> conversionService.convert(activity, ActivityAdminUsersDTO.class));
+        return activityUsersAssemblerPaged.toModel(activityDTOS, activityUsersAssembler);
     }
 
     @Override
@@ -69,7 +77,7 @@ public class ActivityServiceImpl implements ActivityService {
         Activity activityToUpdate = activityRepository.findById(id).orElseThrow(ActivityNotFoundException::new);
         Activity activity = mappingService.getActivityData(activityAdminDTO, activityToUpdate);
         activity.setStatus(Status.ON_UPDATE);
-        activity = activityRepository.save(activity);
+        activityRepository.save(activity);
         log.info("Activity was updated");
         return conversionService.convert(activity, ActivityAdminDTO.class);
     }
@@ -83,8 +91,16 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public PagedModel<ActivityModel> findActivitiesByTypeOfActivityAndStatus(String typeOfActivity, Status status,
-                                                                             Pageable pageable) {
+    public ActivityAdminUsersDTO getByIdAU(Long id) {
+        log.info("Try to find activity by id: " + id);
+        Activity activity = activityRepository.findById(id).orElseThrow(ActivityNotFoundException::new);
+        return conversionService.convert(activity, ActivityAdminUsersDTO.class);
+
+    }
+
+    @Override
+    public PagedModel<ActivityAdminUsersModel> findActivitiesByTypeOfActivityAndStatus(String typeOfActivity, Status status,
+                                                                                       Pageable pageable) {
         log.info("Try to find activities by typeOfActivity and status");
         Page<Activity> page;
         if (Objects.isNull(typeOfActivity)) {
@@ -95,16 +111,14 @@ public class ActivityServiceImpl implements ActivityService {
             page = activityRepository.findActivitiesByTypeOfActivityAndStatus(TypeOfActivity.valueOf(typeOfActivity), status, pageable);
         }
 
-        Page<ActivityAdminDTO> map = page.map(activity -> conversionService.convert(activity, ActivityAdminDTO.class));
-        return pagedResourcesAssembler.toModel(map, activityAssembler);
+        Page<ActivityAdminUsersDTO> map = page.map(activity -> conversionService.convert(activity, ActivityAdminUsersDTO.class));
+        return activityUsersAssemblerPaged.toModel(map, activityUsersAssembler);
     }
 
 
-
-
     @Override
-    public PagedModel<ActivityModel> findActivitiesByCreatedByUserEmailOrUserId(String email, String typeOfActivity,
-                                                                                String status, Pageable pageable) {
+    public PagedModel<ActivityAdminUsersModel> findActivitiesByCreatedByUserEmailOrUserId(String email, String typeOfActivity,
+                                                                                          String status, Pageable pageable) {
         Page<Activity> page;
         log.info("Try to find activities by User email, typeOfActivity and status");
         Long userId = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new).getId();
@@ -116,9 +130,19 @@ public class ActivityServiceImpl implements ActivityService {
             page = activityRepository.findActivitiesByCreatedByUserIdOrUserIdAndTypeOfActivity(userId,
                     typeOfActivity, status, pageable);
         }
-        Page<ActivityAdminDTO> map = page.map(activity -> conversionService.convert(activity, ActivityAdminDTO.class));
-        return pagedResourcesAssembler.toModel(map, activityAssembler);
+        Page<ActivityAdminUsersDTO> map = page.map(activity -> conversionService.convert(activity, ActivityAdminUsersDTO.class));
+        return activityUsersAssemblerPaged.toModel(map, activityUsersAssembler);
     }
+
+    @Override
+    public PagedModel<ActivityAdminUsersModel> findActivitiesByCreatedByUserIdAndStatusAU(String email, Status status, Pageable pageable) {
+        log.info("Try to find activities by created by User with this email" + email + "and status" + status);
+        Long userId = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new).getId();
+        Page<Activity> page = activityRepository.findActivitiesByCreatedByUserIdAndStatus(userId, status, pageable);
+        Page<ActivityAdminUsersDTO> map = page.map(activity -> conversionService.convert(activity, ActivityAdminUsersDTO.class));
+        return activityUsersAssemblerPaged.toModel(map, activityUsersAssembler);
+    }
+
 
     @Override
     public PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatus(String email, Status status, Pageable pageable) {
@@ -158,5 +182,6 @@ public class ActivityServiceImpl implements ActivityService {
         Activity activity = activityRepository.getById(activityId).setStatus(Status.DECLINE);
         activityRepository.save(activity);
     }
+
 
 }

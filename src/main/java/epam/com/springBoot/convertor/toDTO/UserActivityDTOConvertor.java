@@ -4,10 +4,12 @@ import epam.com.springBoot.dto.user.UserActivitiesDTO;
 import epam.com.springBoot.model.User;
 import org.springframework.core.convert.converter.Converter;
 
+import java.util.stream.Collectors;
+
+
 public class UserActivityDTOConvertor implements Converter<User, UserActivitiesDTO> {
 
-//    @Autowired
-//    ConversionService conversionService;
+    ActivityDTOConvertor activityConvertor = new ActivityDTOConvertor();
 
     @Override
     public UserActivitiesDTO convert(User user) {
@@ -15,10 +17,8 @@ public class UserActivityDTOConvertor implements Converter<User, UserActivitiesD
                 .setName(user.getName())
                 .setEmail(user.getEmail())
                 .setSurname(user.getSurname())
-                .setPassword(user.getPassword());
-//                .setListActivities(user.getActivities()
-//                        .stream()
-//                        .map(activity -> conversionService.convert(activity, ActivityAdminDTO.class))
-//                        .collect(Collectors.toList()));
+                .setPassword(user.getPassword())
+                .setActivities(user.getActivities().stream().map(activity -> activityConvertor.convert(activity)).collect(Collectors.toList()));
+
     }
 }

@@ -1,6 +1,10 @@
 package epam.com.springBoot.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import epam.com.springBoot.dto.activity.ActivityAdminDTO;
+import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.model.Activity;
 import epam.com.springBoot.model.Status;
 import epam.com.springBoot.model.TypeOfActivity;
@@ -11,14 +15,15 @@ import java.sql.Timestamp;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ActivityDataUtil {
-    public static final Long ID = 30000L;
+    public static final Long ID = 3000L;
     public static final String NAME = "NAME";
     public static final String DESCRIPTION_ENG = "DESCRIPTION_ENG";
     public static final String DESCRIPTION_RU = "DESCRIPTION_RU";
     public static final TypeOfActivity TYPE_OF_ACTIVITY = TypeOfActivity.EVENT;
     public static final Status STATUS = Status.ON_CHECK;
-    public static final Timestamp START_TIME = Timestamp.valueOf("2018-12-12 01:02:03.123456789");
-    public static final Timestamp END_TIME = Timestamp.valueOf("2019-12-12 01:02:03.123456789");
+    public static final Timestamp START_TIME = Timestamp.valueOf("2022-12-12 01:02:03.123456789");
+    public static final Timestamp END_TIME = Timestamp.valueOf("2022-12-12 01:02:03.123456789");
+    public static final Long CREATED_ID = 3000l;
 
     public static Activity createActivity() {
         return new Activity()
@@ -29,7 +34,8 @@ public class ActivityDataUtil {
                 .setDescriptionEng(DESCRIPTION_ENG)
                 .setDescriptionRus(DESCRIPTION_RU)
                 .setStartTime(START_TIME)
-                .setEndTime(END_TIME);
+                .setEndTime(END_TIME)
+                .setCreatedByUserId(CREATED_ID);
     }
 
     public static ActivityAdminDTO createActivityDto() {
@@ -40,6 +46,13 @@ public class ActivityDataUtil {
                 .setDescriptionEng(DESCRIPTION_ENG)
                 .setDescriptionRus(DESCRIPTION_RU)
                 .setStartTime(START_TIME)
-                .setEndTime(END_TIME);
+                .setEndTime(END_TIME)
+                .setCreatedByUserId(CREATED_ID);
+    }
+
+    public static String jsonMapper(ActivityAdminDTO dto) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return mapper.writeValueAsString(dto);
     }
 }

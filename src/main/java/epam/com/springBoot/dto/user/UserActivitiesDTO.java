@@ -61,7 +61,7 @@ public class UserActivitiesDTO {
         return this;
     }
 
-    public UserActivitiesDTO setListActivities(List<ActivityAdminDTO> activities) {
+    public UserActivitiesDTO setActivities(List<ActivityAdminDTO> activities) {
         this.activities = activities;
         return this;
     }

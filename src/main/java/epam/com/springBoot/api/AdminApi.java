@@ -1,8 +1,8 @@
 package epam.com.springBoot.api;
 
+import epam.com.springBoot.controller.model.ActivityAdminUsersModel;
 import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.controller.model.UserActivitiesModel;
-import epam.com.springBoot.controller.model.UserModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -22,12 +22,20 @@ public interface AdminApi {
 
     @GetMapping("/all-activities")
     @ResponseStatus(HttpStatus.OK)
-    PagedModel<ActivityModel> findAllActivities(Pageable pageable);
+    PagedModel<ActivityAdminUsersModel> findAllActivities(Pageable pageable);
+
+    @GetMapping("/all-activities/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    ActivityAdminUsersModel findActivity(@PathVariable Long id);
 
     @ApiOperation("Get all Users with pagination")
     @GetMapping("/all-users")
     @ResponseStatus(HttpStatus.ACCEPTED)
     PagedModel<UserActivitiesModel> getAllUsers(Pageable pageable);
+
+    @GetMapping("/all-users/{email}")
+    @ResponseStatus(HttpStatus.OK)
+    UserActivitiesModel findUser(@PathVariable String email);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "typeOfActivity", paramType = "query", required = true, value = "Activity TypeOfActivity"),
@@ -35,7 +43,7 @@ public interface AdminApi {
     @ApiOperation("Find all activity by type of activity and status")
     @GetMapping("/activities")
     @ResponseStatus(HttpStatus.OK)
-    PagedModel<ActivityModel> findActivitiesByTypeOfActivityAndStatus(String typeOfActivity, Pageable pageable);
+    PagedModel<ActivityAdminUsersModel> findActivitiesByTypeOfActivityAndStatus(String typeOfActivity, Pageable pageable);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "email", paramType = "path", required = true, value = "User Email"),
@@ -45,7 +53,7 @@ public interface AdminApi {
     @ApiOperation("Find all Activities by User with pagination, With Status and TypeOfActivityParam")
     @GetMapping("/activities/{email}")
     @ResponseStatus(HttpStatus.OK)
-    PagedModel<ActivityModel> findActivitiesByUser(@PathVariable String email, String typeOfActivity, String status, Pageable pageable);
+    PagedModel<ActivityAdminUsersModel> findActivitiesByUser(@PathVariable String email, String typeOfActivity, String status, Pageable pageable);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "activityId", paramType = "path", required = true, value = "Activity Id"),
@@ -53,7 +61,7 @@ public interface AdminApi {
     @ApiOperation("Find all Users by Activity with pagination")
     @GetMapping("/users/{activityId}")
     @ResponseStatus(HttpStatus.OK)
-    PagedModel<UserModel> findAllUsersByActivityId(@PathVariable Long activityId, Pageable pageable);
+    PagedModel<UserActivitiesModel> findAllUsersByActivityId(@PathVariable Long activityId, Pageable pageable);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "activityId", paramType = "path", required = true, value = "Activity Id"),

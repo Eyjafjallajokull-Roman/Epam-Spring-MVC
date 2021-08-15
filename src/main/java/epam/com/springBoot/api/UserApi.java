@@ -89,7 +89,7 @@ public interface UserApi {
             @ApiImplicitParam(name = "email", paramType = "path", required = true, value = "Activity Id"),
     })
     @ApiOperation("Delete user")
-    @GetMapping("/delete/{email}")
+    @DeleteMapping("/{email}")
         //todo to delete self account not others
     ResponseEntity<Void> delete(@PathVariable String email);
 

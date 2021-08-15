@@ -36,7 +36,7 @@ public class ActivityAdminUsersDTO {
     private Long createdByUserId;
     private String descriptionEng;
     private String descriptionRus;
-    private List<UserDTO> userSet;
+    private List<UserDTO> users;
 
     public ActivityAdminUsersDTO setId(Long id) {
         this.id = id;
@@ -83,8 +83,8 @@ public class ActivityAdminUsersDTO {
         return this;
     }
 
-    public ActivityAdminUsersDTO setUserList(List<UserDTO> userSet) {
-        this.userSet = userSet;
+    public ActivityAdminUsersDTO setUsers(List<UserDTO> users) {
+        this.users = users;
         return this;
     }
 }
