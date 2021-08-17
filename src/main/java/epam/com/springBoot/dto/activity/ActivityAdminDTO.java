@@ -1,6 +1,7 @@
 package epam.com.springBoot.dto.activity;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import epam.com.springBoot.validator.annotation.TimeConstraint;
 import lombok.Data;
 
@@ -19,18 +20,27 @@ import java.sql.Timestamp;
 })
 @Data
 public class ActivityAdminDTO {
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
     @NotNull(message = "name shouldn`t be empty")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Timestamp startTime;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Timestamp endTime;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String status;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @NotBlank(message = "type of activity shouldn`t be empty")
     private String typeOfActivity;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long createdByUserId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionEng;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionRus;
+
     
 
     public ActivityAdminDTO setId(Long id) {

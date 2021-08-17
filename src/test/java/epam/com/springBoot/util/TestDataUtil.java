@@ -3,6 +3,7 @@ package epam.com.springBoot.util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import epam.com.springBoot.dto.user.UserActivitiesDTO;
 import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.model.User;
 import lombok.AccessLevel;
@@ -29,6 +30,15 @@ public class TestDataUtil {
 
     public static UserDTO createUserDto() {
         return new UserDTO()
+                .setName(NAME)
+                .setEmail(TEST_EMAIL)
+                .setSurname(SURNAME)
+                .setPassword(PASSWORD)
+                .setConfirmPassword(PASSWORD);
+    }
+
+    public static UserActivitiesDTO createUserActivitiesDto() {
+        return new UserActivitiesDTO()
                 .setName(NAME)
                 .setEmail(TEST_EMAIL)
                 .setSurname(SURNAME)

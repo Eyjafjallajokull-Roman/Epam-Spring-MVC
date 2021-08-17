@@ -4,9 +4,9 @@ import epam.com.springBoot.api.UserApi;
 import epam.com.springBoot.controller.assembler.UserAssembler;
 import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.controller.model.UserModel;
-import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.dto.group.OnCreate;
 import epam.com.springBoot.dto.group.OnUpdate;
+import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.model.Status;
 import epam.com.springBoot.service.ActivityService;
 import epam.com.springBoot.service.UserService;
@@ -30,6 +30,8 @@ public class UserController implements UserApi {
     private UserAssembler userAssembler;
     @Autowired
     private ActivityService activityService;
+
+
 
     @Override
     public UserModel createUser(@RequestBody @Validated(OnCreate.class) UserDTO dto, Principal principal) {

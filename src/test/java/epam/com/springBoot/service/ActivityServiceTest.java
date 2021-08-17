@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class ActivityServiceTest {
 
     @InjectMocks
@@ -38,6 +40,9 @@ public class ActivityServiceTest {
 
     @Spy
     private static MappingService mappingService = new MappingServiceImpl();
+
+
+
 
     @Test
     public void getByIdTest() {

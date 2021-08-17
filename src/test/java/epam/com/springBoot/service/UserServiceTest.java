@@ -1,5 +1,7 @@
 package epam.com.springBoot.service;
 
+import epam.com.springBoot.controller.assembler.UserActivitiesAssembler;
+import epam.com.springBoot.dto.user.UserActivitiesDTO;
 import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.exceptions.NoSuchUserException;
 import epam.com.springBoot.exceptions.UserAlreadyExist;
@@ -18,8 +20,22 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static epam.com.springBoot.util.TestDataUtil.ID;
@@ -31,6 +47,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
+@Import(HateoasAwareSpringDataWebConfiguration.class)
 public class UserServiceTest {
     @InjectMocks
     private UserServiceImpl userService;
@@ -44,8 +62,12 @@ public class UserServiceTest {
     @Mock
     private ConversionService conversionService;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @Spy
     private static MappingService mappingService = new MappingServiceImpl();
+
 
     @Test
     void getByEmail() {
@@ -76,6 +98,7 @@ public class UserServiceTest {
         when(userRepository.save(any())).thenReturn(testUser);
         when(conversionService.convert(testUserDto, User.class)).thenReturn(testUser);
         when(conversionService.convert(testUser, UserDTO.class)).thenReturn(testUserDto);
+        when(passwordEncoder.encode(testUserDto.getPassword())).thenReturn("encodePassword");
 
         UserDTO userDTO = userService.createUser(testUserDto);
 
@@ -148,7 +171,8 @@ public class UserServiceTest {
         verify(userRepository, times(1)).addUserToActivity(ID, ActivityDataUtil.ID);
 
     }
-@Test
+
+    @Test
     void addUserToActivityNoSuchUserTest() {
         when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.empty());
         assertThrows(NoSuchUserException.class, () -> userService.addUserToActivity(TEST_EMAIL, ActivityDataUtil.ID));
@@ -162,10 +186,31 @@ public class UserServiceTest {
         userService.deleteUserFromActivity(TEST_EMAIL, ActivityDataUtil.ID);
         verify(userRepository, times(1)).deleteUserFromActivity(ID, ActivityDataUtil.ID);
     }
-@Test
+
+    @Test
     void deleteUserToActivityNoSuchUserTest() {
         when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.empty());
         assertThrows(NoSuchUserException.class, () -> userService.deleteUserFromActivity(TEST_EMAIL, ActivityDataUtil.ID));
+    }
+
+    @Test
+    void findAllTest() {
+        Pageable pageable = PageRequest.of(0, 1);
+        List<User> userList = new ArrayList<>();
+        List<UserActivitiesDTO> dtos = new ArrayList<>();
+        UserActivitiesDTO userDTO = TestDataUtil.createUserActivitiesDto();
+        User user = TestDataUtil.createUser();
+        userList.add(user);
+        dtos.add(userDTO);
+        Page<UserActivitiesDTO> dtosPage = new PageImpl<>(dtos);
+        Page<User> users = new PageImpl<>(userList, pageable, 1);
+        PagedModel<UserActivitiesDTO> pagedModel = PagedModel.empty();
+
+        when(userRepository.findAll(pageable)).thenReturn(users);
+        when(conversionService.convert(user, UserActivitiesDTO.class)).thenReturn(userDTO);
+        userService.findAll(pageable);
+        verify(userRepository, times(1)).findAll(pageable);
+
     }
 
 

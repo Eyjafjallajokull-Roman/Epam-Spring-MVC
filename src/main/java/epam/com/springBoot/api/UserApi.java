@@ -2,9 +2,9 @@ package epam.com.springBoot.api;
 
 import epam.com.springBoot.controller.model.ActivityModel;
 import epam.com.springBoot.controller.model.UserModel;
-import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.dto.group.OnCreate;
 import epam.com.springBoot.dto.group.OnUpdate;
+import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.model.Status;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

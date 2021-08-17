@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Qualifier("userDetailsServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
@@ -27,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 
     @Autowired
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {

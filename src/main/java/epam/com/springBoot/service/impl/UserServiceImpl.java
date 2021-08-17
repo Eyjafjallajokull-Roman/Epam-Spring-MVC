@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     public PagedModel<UserActivitiesModel> findAll(Pageable pageable) {
         log.info("Find All - find all users in User Service");
         Page<User> pageResult = userRepository.findAll(pageable);
-        pageResult = pageResult.map(user -> user.setActivities(activityRepository.findActivitiesByCreatedByUserId(user.getId())));
+//        pageResult = pageResult.map(user -> user.setActivities(activityRepository.findActivitiesByCreatedByUserId(user.getId())));
         Page<UserActivitiesDTO> map = pageResult.map(user -> conversionService.convert(user, UserActivitiesDTO.class));
         return userActivitiesResourceAssembler.toModel(map, userActivitiesAssembler);
     }
@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new UserAlreadyExist();
         }
+
         User user = conversionService.convert(userDTO, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.CLIENT);
@@ -127,7 +128,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUserToActivity(String email, Long activityId) {
         Long userId = userRepository.findByEmail(email).orElseThrow(NoSuchUserException::new).getId();
-
         log.info("Try to add user with id:" + userId + " and activity id: " + activityId);
         if (activityRepository.existsById(activityId))
             userRepository.addUserToActivity(userId, activityId);

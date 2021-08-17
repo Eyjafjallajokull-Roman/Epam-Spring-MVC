@@ -26,7 +26,7 @@ public interface ActivityService {
 
     PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatus(String email, Status status, Pageable pageable);
 
-    public ActivityAdminUsersDTO getByIdAU(Long id);
+    ActivityAdminUsersDTO getByIdAU(Long id);
 
     void delete(Long id);
 

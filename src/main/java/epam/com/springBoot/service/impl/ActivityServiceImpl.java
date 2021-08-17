@@ -65,7 +65,7 @@ public class ActivityServiceImpl implements ActivityService {
     public ActivityAdminDTO createActivity(ActivityAdminDTO activityAdminDTO) {
         log.info("Try to create Activity");
         Activity activity = conversionService.convert(activityAdminDTO, Activity.class);
-        Objects.requireNonNull(activity).setStatus(Status.ON_CHECK);
+        (activity).setStatus(Status.ON_CHECK);
         activity = activityRepository.save(activity);
         log.info("Activity was created");
         return conversionService.convert(activity, ActivityAdminDTO.class);

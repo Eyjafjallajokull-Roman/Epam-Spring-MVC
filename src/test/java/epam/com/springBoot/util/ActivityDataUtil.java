@@ -19,17 +19,17 @@ public class ActivityDataUtil {
     public static final String NAME = "NAME";
     public static final String DESCRIPTION_ENG = "DESCRIPTION_ENG";
     public static final String DESCRIPTION_RU = "DESCRIPTION_RU";
-    public static final TypeOfActivity TYPE_OF_ACTIVITY = TypeOfActivity.EVENT;
+    public static final String TYPE_OF_ACTIVITY = TypeOfActivity.EVENT.name();
     public static final Status STATUS = Status.ON_CHECK;
     public static final Timestamp START_TIME = Timestamp.valueOf("2022-12-12 01:02:03.123456789");
-    public static final Timestamp END_TIME = Timestamp.valueOf("2022-12-12 01:02:03.123456789");
+    public static final Timestamp END_TIME = Timestamp.valueOf("2023-12-12 01:02:03.123456789");
     public static final Long CREATED_ID = 3000l;
 
     public static Activity createActivity() {
         return new Activity()
                 .setId(ID)
                 .setStatus(STATUS)
-                .setTypeOfActivity(TYPE_OF_ACTIVITY)
+                .setTypeOfActivity(TypeOfActivity.EVENT)
                 .setName(NAME)
                 .setDescriptionEng(DESCRIPTION_ENG)
                 .setDescriptionRus(DESCRIPTION_RU)
