@@ -7,11 +7,13 @@ import epam.com.springBoot.controller.model.UserModel;
 import epam.com.springBoot.dto.group.OnCreate;
 import epam.com.springBoot.dto.group.OnUpdate;
 import epam.com.springBoot.dto.user.UserDTO;
+import epam.com.springBoot.model.Role;
 import epam.com.springBoot.model.Status;
 import epam.com.springBoot.service.ActivityService;
 import epam.com.springBoot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -32,7 +34,6 @@ public class UserController implements UserApi {
     private ActivityService activityService;
 
 
-
     @Override
     public UserModel createUser(@RequestBody @Validated(OnCreate.class) UserDTO dto, Principal principal) {
         return userAssembler.toModel(userService.createUser(dto));
@@ -43,11 +44,7 @@ public class UserController implements UserApi {
         return userAssembler.toModel(userService.update(dto, email));
     }
 
-    @Override
-    public ResponseEntity<Void> delete(@PathVariable String email) {
-        userService.deleteByEmail(email);
-        return ResponseEntity.noContent().build();
-    }
+
 
     @Override
     public UserModel getUserByEmail(@PathVariable String email) {
@@ -75,12 +72,12 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatusMainPage(String email, Pageable pageable) {
+    public PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatusMainPage(String email, @PageableDefault(size = 5) Pageable pageable) {
         return activityService.findActivitiesByCreatedByUserIdAndStatus(email, Status.ACCEPT, pageable);
     }
 
     @Override
-    public PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatus(@PathVariable String email, Status status, Pageable pageable) {
+    public PagedModel<ActivityModel> findActivitiesByCreatedByUserIdAndStatus(@PathVariable String email, Status status, @PageableDefault(size = 5) Pageable pageable) {
         return activityService.findActivitiesByCreatedByUserIdAndStatus(email, status, pageable);
     }
 

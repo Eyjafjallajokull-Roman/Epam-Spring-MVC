@@ -28,8 +28,8 @@ public class ActivityAssembler extends RepresentationModelAssemblerSupport<Activ
         Link get = linkTo(methodOn(ActivityController.class).getActivity(entity.getId())).withRel(GET_REL);
         Link create = linkTo(methodOn(ActivityController.class).createActivity(entity)).withRel(CREATE_ACTIVITY);
         Link update = linkTo(methodOn(ActivityController.class).updateActivity(entity, entity.getId())).withRel(UPDATE_ACTIVITY);
-        Link delete = linkTo(methodOn(ActivityController.class).deleteActivity(entity.getId())).withRel(DELETE_ACTIVITY);
-        activityModel.add(get, create, update, delete);
+        Link setOnDelete = linkTo(methodOn(ActivityController.class).setOnDelete(entity.getId())).withRel(DELETE_ACTIVITY);
+        activityModel.add(get, create, update, setOnDelete);
         return activityModel;
     }
 }

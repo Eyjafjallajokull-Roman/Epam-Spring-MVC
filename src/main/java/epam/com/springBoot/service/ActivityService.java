@@ -28,6 +28,8 @@ public interface ActivityService {
 
     ActivityAdminUsersDTO getByIdAU(Long id);
 
+    void setEndTimeForTimeTracker(Long activityId);
+
     void delete(Long id);
 
     void setOnDelete(Long id);

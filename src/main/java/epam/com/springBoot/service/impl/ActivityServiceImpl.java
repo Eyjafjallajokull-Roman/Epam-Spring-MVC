@@ -24,6 +24,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Slf4j
@@ -61,6 +62,7 @@ public class ActivityServiceImpl implements ActivityService {
         return activityUsersAssemblerPaged.toModel(activityDTOS, activityUsersAssembler);
     }
 
+
     @Override
     public ActivityAdminDTO createActivity(ActivityAdminDTO activityAdminDTO) {
         log.info("Try to create Activity");
@@ -96,6 +98,15 @@ public class ActivityServiceImpl implements ActivityService {
         Activity activity = activityRepository.findById(id).orElseThrow(ActivityNotFoundException::new);
         return conversionService.convert(activity, ActivityAdminUsersDTO.class);
 
+    }
+
+    @Override
+    public void setEndTimeForTimeTracker(Long activityId) {
+        log.info("set End Time for Activity with TypeOFActivity - TimeTracker ");
+        Activity activity = activityRepository.findById(activityId).orElseThrow(ActivityNotFoundException::new);
+        activity.setEndTime(new Timestamp(System.currentTimeMillis()));
+        activityRepository.save(activity);
+        log.info("set End Time for Activity with TypeOFActivity - TimeTracker - success");
     }
 
     @Override

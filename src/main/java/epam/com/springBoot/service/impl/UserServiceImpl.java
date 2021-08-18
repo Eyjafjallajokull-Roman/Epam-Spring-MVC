@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     public PagedModel<UserActivitiesModel> findAll(Pageable pageable) {
         log.info("Find All - find all users in User Service");
         Page<User> pageResult = userRepository.findAll(pageable);
-//        pageResult = pageResult.map(user -> user.setActivities(activityRepository.findActivitiesByCreatedByUserId(user.getId())));
+        pageResult = pageResult.map(user -> user.setActivities(activityRepository.findActivitiesByCreatedByUserId(user.getId())));
         Page<UserActivitiesDTO> map = pageResult.map(user -> conversionService.convert(user, UserActivitiesDTO.class));
         return userActivitiesResourceAssembler.toModel(map, userActivitiesAssembler);
     }

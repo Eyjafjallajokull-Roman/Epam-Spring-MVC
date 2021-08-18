@@ -12,12 +12,16 @@ import epam.com.springBoot.service.ActivityService;
 import epam.com.springBoot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @RestController
+
 public class AdminController implements AdminApi {
     @Autowired
     private UserService userService;
@@ -36,7 +40,7 @@ public class AdminController implements AdminApi {
 
 
     @Override
-    public PagedModel<UserActivitiesModel> getAllUsers(Pageable pageable) {
+    public PagedModel<UserActivitiesModel> getAllUsers(@PageableDefault(size = 5) Pageable pageable) {
         return userService.findAll(pageable);
     }
 
@@ -46,7 +50,7 @@ public class AdminController implements AdminApi {
     }
 
     @Override
-    public PagedModel<ActivityAdminUsersModel> findAllActivities(Pageable pageable) {
+    public PagedModel<ActivityAdminUsersModel> findAllActivities(@PageableDefault(size = 5) Pageable pageable) {
         return activityService.findAllActivities(pageable);
     }
 
@@ -56,17 +60,17 @@ public class AdminController implements AdminApi {
     }
 
     @Override
-    public PagedModel<ActivityAdminUsersModel> findActivitiesByTypeOfActivityAndStatus(String typeOfActivity, Pageable pageable) {
+    public PagedModel<ActivityAdminUsersModel> findActivitiesByTypeOfActivityAndStatus(@PageableDefault(size = 5) String typeOfActivity, Pageable pageable) {
         return activityService.findActivitiesByTypeOfActivityAndStatus(typeOfActivity, Status.ON_CHECK, pageable);
     }
 
     @Override
-    public PagedModel<ActivityAdminUsersModel> findActivitiesByUser(@PathVariable String email, String typeOfActivity, String status, Pageable pageable) {
+    public PagedModel<ActivityAdminUsersModel> findActivitiesByUser(@PageableDefault(size = 5) @PathVariable String email, String typeOfActivity, String status, Pageable pageable) {
         return activityService.findActivitiesByCreatedByUserEmailOrUserId(email, typeOfActivity, status, pageable);
     }
 
     @Override
-    public PagedModel<UserActivitiesModel> findAllUsersByActivityId(@PathVariable Long id, Pageable pageable) {
+    public PagedModel<UserActivitiesModel> findAllUsersByActivityId(@PageableDefault(size = 5) @PathVariable Long id, Pageable pageable) {
         return userService.findAllUsersByActivityId(id, pageable);
     }
 
@@ -79,6 +83,18 @@ public class AdminController implements AdminApi {
     @Override
     public ResponseEntity<Void> acceptActivity(@PathVariable Long activityId) {
         activityService.acceptActivity(activityId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> delete(@PathVariable String email) {
+        userService.deleteByEmail(email);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
+        activityService.delete(id);
         return ResponseEntity.noContent().build();
     }
 

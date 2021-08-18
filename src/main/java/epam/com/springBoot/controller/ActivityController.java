@@ -29,7 +29,7 @@ public class ActivityController implements ActivityApi {
     public ActivityModel createActivity(@Valid @Validated(OnCreate.class) @RequestBody ActivityAdminDTO dto) {
         return activityAssembler.toModel(activityService.createActivity(dto));
     }
-    
+
     @Override
     public ActivityModel updateActivity(@RequestBody ActivityAdminDTO dto, @PathVariable Long id) {
         return activityAssembler.toModel(activityService.updateActivity(dto, id));
@@ -40,14 +40,16 @@ public class ActivityController implements ActivityApi {
         return activityAssembler.toModel(activityService.getById(id));
     }
 
+
     @Override
-    public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
-        activityService.delete(id);
+    public ResponseEntity<Void> setOnDelete(@PathVariable Long activityId) {
+        activityService.setOnDelete(activityId);
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity<Void> setOnDelete(@PathVariable Long activityId) {
-        activityService.setOnDelete(activityId);
+    @Override
+    public ResponseEntity<Void> setEndTimeForTimeTracker(Long activityId) {
+        activityService.setEndTimeForTimeTracker(activityId);
         return ResponseEntity.noContent().build();
     }
 

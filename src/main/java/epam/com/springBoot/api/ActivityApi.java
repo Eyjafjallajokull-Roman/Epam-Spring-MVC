@@ -40,10 +40,17 @@ public interface ActivityApi {
     ActivityModel getActivity(@PathVariable Long id);
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Activity id"),
+            @ApiImplicitParam(name = "activityId", paramType = "path", required = true, value = "Activity id"),
     })
-    @ApiOperation("Delete Activity")
-    @DeleteMapping("/{id}")
-    ResponseEntity<Void> deleteActivity(@PathVariable Long id);
+    @ApiOperation("Set Activity on Delete")
+    @GetMapping("/{activityId}")
+    ResponseEntity<Void> setOnDelete(@PathVariable Long activityId);
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "activityId", paramType = "path", required = true, value = "Activity id"),
+    })
+    @ApiOperation("Set End Time for TimeTracker")
+    @GetMapping("{activityId}/end_time")
+    ResponseEntity<Void> setEndTimeForTimeTracker(@PathVariable Long activityId);
 
 }
