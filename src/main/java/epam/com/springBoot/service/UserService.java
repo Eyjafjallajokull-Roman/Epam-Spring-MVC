@@ -1,7 +1,6 @@
 package epam.com.springBoot.service;
 
 import epam.com.springBoot.controller.model.UserActivitiesModel;
-import epam.com.springBoot.controller.model.UserModel;
 import epam.com.springBoot.dto.user.UserActivitiesDTO;
 import epam.com.springBoot.dto.user.UserDTO;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,6 @@ public interface UserService {
 
     UserDTO createUser(UserDTO userDTO);
 
-    UserDTO getById(Long id);
 
     UserDTO update(UserDTO dto, String email);
 
@@ -20,16 +18,13 @@ public interface UserService {
 
     PagedModel<UserActivitiesModel> findAllUsersByActivityId(Long activityId, Pageable pageable);
 
-    public UserActivitiesDTO getByEmailUADTO(String email);
+    UserActivitiesDTO getByEmailUADTO(String email);
 
     void deleteByEmail(String email);
 
     void addUserToActivity(String email, Long activityId);
 
     void deleteUserFromActivity(String email, Long activityId);
-
-
-
 
 
 }

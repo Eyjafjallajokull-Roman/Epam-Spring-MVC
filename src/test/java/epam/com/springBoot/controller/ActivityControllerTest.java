@@ -60,19 +60,7 @@ public class ActivityControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private WebApplicationContext context;
 
-    @Autowired
-    private Filter springSecurityFilterChain;
-
-
-    @BeforeEach
-    public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .apply(SecurityMockMvcConfigurers.springSecurity(springSecurityFilterChain)).build();
-        //
-    }
 
     @Test
     @WithMockUser(authorities = "Client")
@@ -90,17 +78,14 @@ public class ActivityControllerTest {
     }
 
     @Test
-    @WithMockUser(authorities = "Client")
+    @WithMockUser(authorities = "CLIENT")
     void createActivityTest() throws Exception {
-        ActivityAdminDTO dto = new ActivityAdminDTO().setTypeOfActivity(TypeOfActivity.REMINDER.name())
-                .setEndTime(Timestamp.valueOf("2023-12-12 01:02:03.123456789"))
-                .setName("test")
-                .setCreatedByUserId(2L);
+        ActivityAdminDTO dto = ActivityDataUtil.createActivityDto();
         ActivityModel model = new ActivityModel(dto);
         when(activityService.createActivity(dto)).thenReturn(dto);
         when(activityAssembler.toModel(dto)).thenReturn(model);
 
-        mockMvc.perform(post("/api/v1/activities/").header("Content-type","application/json").contentType("application/json")
+        mockMvc.perform(post("/api/v1/activities/").contentType("application/json")
                         .content(ActivityDataUtil.jsonMapper(dto))
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
@@ -115,11 +100,6 @@ public class ActivityControllerTest {
     @WithMockUser(authorities = "ADMIN")
     void updateUserTest() throws Exception {
         ActivityAdminDTO dto = ActivityDataUtil.createActivityDto();
-//                .setTypeOfActivity(TypeOfActivity.REMINDER.name())
-//                .setEndTime(Timestamp.valueOf("2023-12-12 01:02:03.123456789"))
-//                .setName("test")
-//                .setCreatedByUserId(2L)
-//                .setId(3000L);
         ActivityModel model = new ActivityModel(dto);
         when(activityService.updateActivity(dto, dto.getId())).thenReturn(dto);
         when(activityAssembler.toModel(dto)).thenReturn(model);

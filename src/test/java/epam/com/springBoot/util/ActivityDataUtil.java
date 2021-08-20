@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import epam.com.springBoot.dto.activity.ActivityAdminDTO;
+import epam.com.springBoot.dto.activity.ActivityAdminUsersDTO;
 import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.model.Activity;
 import epam.com.springBoot.model.Status;
@@ -41,7 +42,19 @@ public class ActivityDataUtil {
     public static ActivityAdminDTO createActivityDto() {
         return new ActivityAdminDTO()
                 .setId(ID)
-                .setTypeOfActivity(String.valueOf(TYPE_OF_ACTIVITY))
+                .setTypeOfActivity(TYPE_OF_ACTIVITY)
+                .setName(NAME)
+                .setDescriptionEng(DESCRIPTION_ENG)
+                .setDescriptionRus(DESCRIPTION_RU)
+                .setStartTime(START_TIME)
+                .setEndTime(END_TIME)
+                .setCreatedByUserId(CREATED_ID);
+    }
+
+    public static ActivityAdminUsersDTO createActivityUsersDto() {
+        return new ActivityAdminUsersDTO()
+                .setId(ID)
+                .setTypeOfActivity(TYPE_OF_ACTIVITY)
                 .setName(NAME)
                 .setDescriptionEng(DESCRIPTION_ENG)
                 .setDescriptionRus(DESCRIPTION_RU)

@@ -1,6 +1,7 @@
 package epam.com.springBoot.service;
 
 import epam.com.springBoot.controller.assembler.UserActivitiesAssembler;
+import epam.com.springBoot.controller.model.UserActivitiesModel;
 import epam.com.springBoot.dto.user.UserActivitiesDTO;
 import epam.com.springBoot.dto.user.UserDTO;
 import epam.com.springBoot.exceptions.NoSuchUserException;
@@ -64,6 +65,15 @@ public class UserServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private UserActivitiesAssembler userActivitiesAssembler;
+
+    @Mock
+    private PagedModel<UserActivitiesModel> userActivitiesModels;
+
+    @Mock
+    private PagedResourcesAssembler<UserActivitiesDTO> userActivitiesResourceAssembler;
 
     @Spy
     private static MappingService mappingService = new MappingServiceImpl();
@@ -198,20 +208,74 @@ public class UserServiceTest {
         Pageable pageable = PageRequest.of(0, 1);
         List<User> userList = new ArrayList<>();
         List<UserActivitiesDTO> dtos = new ArrayList<>();
+
         UserActivitiesDTO userDTO = TestDataUtil.createUserActivitiesDto();
         User user = TestDataUtil.createUser();
         userList.add(user);
         dtos.add(userDTO);
+
         Page<UserActivitiesDTO> dtosPage = new PageImpl<>(dtos);
         Page<User> users = new PageImpl<>(userList, pageable, 1);
         PagedModel<UserActivitiesDTO> pagedModel = PagedModel.empty();
 
+
         when(userRepository.findAll(pageable)).thenReturn(users);
         when(conversionService.convert(user, UserActivitiesDTO.class)).thenReturn(userDTO);
+        when(userActivitiesResourceAssembler.toModel(any(), eq(userActivitiesAssembler))).thenReturn(userActivitiesModels);
+
         userService.findAll(pageable);
+
         verify(userRepository, times(1)).findAll(pageable);
+        verify(conversionService, times(1)).convert(user, UserActivitiesDTO.class);
+        verify(userActivitiesResourceAssembler, times(1)).toModel(any(), eq(userActivitiesAssembler));
 
     }
 
+    @Test
+    void getByEmailAUTest() {
+        User user = TestDataUtil.createUser();
+        Optional<User> optionalUser = Optional.of(user);
+        UserActivitiesDTO dto = TestDataUtil.createUserActivitiesDto();
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(optionalUser);
+        when(conversionService.convert(user, UserActivitiesDTO.class)).thenReturn(dto);
+
+        UserActivitiesDTO result = userService.getByEmailUADTO(TEST_EMAIL);
+
+        assertThat(result, allOf(
+                hasProperty("email", equalTo(user.getEmail())),
+                hasProperty("name", equalTo(user.getName())))
+        );
+    }
+
+    @Test
+    void findAllUsersByActivityIdTest(){
+        Pageable pageable = PageRequest.of(0, 1);
+        List<User> userList = new ArrayList<>();
+        List<UserActivitiesDTO> dtos = new ArrayList<>();
+
+        UserActivitiesDTO userDTO = TestDataUtil.createUserActivitiesDto();
+        User user = TestDataUtil.createUser();
+        Activity activity = ActivityDataUtil.createActivity();
+
+        userList.add(user);
+        dtos.add(userDTO);
+
+        Page<UserActivitiesDTO> dtosPage = new PageImpl<>(dtos);
+        Page<User> users = new PageImpl<>(userList, pageable, 1);
+        PagedModel<UserActivitiesDTO> pagedModel = PagedModel.empty();
+
+
+        when(activityRepository.findById(activity.getId())).thenReturn(Optional.of(activity));
+
+        when(userRepository.findAllUsersByActivityId(activity.getId(),pageable)).thenReturn(users);
+        when(conversionService.convert(user, UserActivitiesDTO.class)).thenReturn(userDTO);
+        when(userActivitiesResourceAssembler.toModel(any(), eq(userActivitiesAssembler))).thenReturn(userActivitiesModels);
+
+        userService.findAllUsersByActivityId(activity.getId(),pageable);
+
+        verify(userRepository, times(1)).findAllUsersByActivityId(activity.getId(),pageable);
+        verify(conversionService, times(1)).convert(user, UserActivitiesDTO.class);
+        verify(userActivitiesResourceAssembler, times(1)).toModel(any(), eq(userActivitiesAssembler));
+    }
 
 }

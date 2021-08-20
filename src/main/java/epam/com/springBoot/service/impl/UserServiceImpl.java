@@ -55,8 +55,10 @@ public class UserServiceImpl implements UserService {
         Page<User> pageResult = userRepository.findAll(pageable);
         pageResult = pageResult.map(user -> user.setActivities(activityRepository.findActivitiesByCreatedByUserId(user.getId())));
         Page<UserActivitiesDTO> map = pageResult.map(user -> conversionService.convert(user, UserActivitiesDTO.class));
-        return userActivitiesResourceAssembler.toModel(map, userActivitiesAssembler);
+        PagedModel<UserActivitiesModel> userActivitiesModels = userActivitiesResourceAssembler.toModel(map, userActivitiesAssembler);
+        return userActivitiesModels;
     }
+
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
@@ -71,14 +73,6 @@ public class UserServiceImpl implements UserService {
         user = userRepository.save(user);
         log.info("User was created successfully");
         return conversionService.convert(user, UserDTO.class);
-    }
-
-
-    @Override
-    public UserDTO getById(Long id) {
-        log.info("Get User by id: " + id);
-        return conversionService
-                .convert(userRepository.findById(id).orElseThrow(UserNotFoundException::new), UserDTO.class);
     }
 
     @Override

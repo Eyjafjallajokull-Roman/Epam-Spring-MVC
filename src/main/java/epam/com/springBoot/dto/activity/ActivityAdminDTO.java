@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @TimeConstraint.List({
         @TimeConstraint(
@@ -41,7 +42,19 @@ public class ActivityAdminDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionRus;
 
-    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ActivityAdminDTO that = (ActivityAdminDTO) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(createdByUserId, that.createdByUserId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startTime, endTime, createdByUserId);
+    }
 
     public ActivityAdminDTO setId(Long id) {
         this.id = id;

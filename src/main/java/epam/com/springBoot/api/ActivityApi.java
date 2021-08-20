@@ -43,7 +43,7 @@ public interface ActivityApi {
             @ApiImplicitParam(name = "activityId", paramType = "path", required = true, value = "Activity id"),
     })
     @ApiOperation("Set Activity on Delete")
-    @GetMapping("/{activityId}")
+    @GetMapping("/{activityId}/setOnDelete")
     ResponseEntity<Void> setOnDelete(@PathVariable Long activityId);
 
     @ApiImplicitParams({
