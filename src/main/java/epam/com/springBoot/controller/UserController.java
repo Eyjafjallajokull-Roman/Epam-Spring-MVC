@@ -35,7 +35,7 @@ public class UserController implements UserApi {
 
 
     @Override
-    public UserModel createUser(@RequestBody @Validated(OnCreate.class) UserDTO dto, Principal principal) {
+    public UserModel createUser(@RequestBody @Validated(OnCreate.class) UserDTO dto) {
         return userAssembler.toModel(userService.createUser(dto));
     }
 
@@ -45,14 +45,12 @@ public class UserController implements UserApi {
     }
 
 
-
     @Override
     public UserModel getUserByEmail(@PathVariable String email) {
         return userAssembler.toModel(userService.getByEmail(email));
     }
 
 
-    //todo mapping
     @Override
     public ResponseEntity<Void> addUserToActivity(String email, Long activityId) {
         userService.addUserToActivity(email, activityId);

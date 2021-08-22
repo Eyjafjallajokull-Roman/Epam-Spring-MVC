@@ -79,7 +79,7 @@ public class UserControllerTest {
         when(userService.createUser(userDTO)).thenReturn(userDTO);
         when(userAssembler.toModel(userDTO)).thenReturn(userModel);
 
-        mockMvc.perform(post("/api/v1/users/").contentType("application/json").content(TestDataUtil.jsonMapper(userDTO))
+        mockMvc.perform(post("/api/v1/users/create/").contentType("application/json").content(TestDataUtil.jsonMapper(userDTO))
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .with(csrf()))
@@ -105,16 +105,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.email").value(TestDataUtil.TEST_EMAIL));
 
 
-    }
-
-
-    @Test
-    @WithMockUser(authorities = "ADMIN")
-    void deleteTest() throws Exception {
-
-        doNothing().when(userService).deleteByEmail(TestDataUtil.TEST_EMAIL);
-        mockMvc.perform(delete("/api/v1/users/" + TestDataUtil.TEST_EMAIL).with(csrf())).andExpect(status().isNoContent());
-        verify(userService, times(1)).deleteByEmail(TestDataUtil.TEST_EMAIL);
     }
 
 }

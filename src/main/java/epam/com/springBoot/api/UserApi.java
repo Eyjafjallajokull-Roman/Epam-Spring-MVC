@@ -34,8 +34,8 @@ public interface UserApi {
 
     @ApiOperation("Create User")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    UserModel createUser(@Valid @RequestBody @Validated(OnCreate.class) UserDTO dto, Principal principal);
+    @PostMapping("/create")
+    UserModel createUser(@Valid @RequestBody @Validated(OnCreate.class) UserDTO dto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "email", paramType = "path", required = true, value = "User email"),

@@ -28,6 +28,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .headers().cacheControl().disable()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/api/v1/users/create").permitAll()
                 .antMatchers("/api/v1/admin/**").access("hasAuthority('ADMIN')")
                 .antMatchers("/api/v1/users/**", "/api/v1/activities/**").access("hasAuthority('CLIENT')")
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
